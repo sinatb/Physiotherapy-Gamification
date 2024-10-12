@@ -502,7 +502,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joint: {fileID: 3125854314670803802, guid: 978d7ac6e139f01438d4c8eecd76ba83, type: 3}
   initial_pos: {fileID: 1707993291}
-  connectionMatrix: {fileID: 11400000, guid: c25405454d6663d4f83e8983252e66e1, type: 2}
+  lr_prefab: {fileID: 2323921336608834167, guid: eb54490af5a0623418c4df677476ad0b, type: 3}
+  connectionMatrix: {fileID: 11400000, guid: acc176eea1f08044eaefc6d3af2780fa, type: 2}
   scale: 5
 --- !u!1 &1807239295
 GameObject:

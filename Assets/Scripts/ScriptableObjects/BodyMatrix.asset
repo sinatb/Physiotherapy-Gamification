@@ -12,4 +12,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f7dc1051427b941bd94f96c1c88816, type: 3}
   m_Name: BodyMatrix
   m_EditorClassIdentifier: 
-  matrix: 01000000020000000300000007000000000000000400000005000000ffffffff060000000a000000ffffffff0c000000180000000b0000000c0000000d0000000e0000000f000000100000000f000000100000000f000000100000000b000000170000001700000018000000190000001a0000001b0000001c0000001b000000
+  matrix:
+  - src: 7
+    dst: 3
+  - src: 3
+    dst: 2
+  - src: 2
+    dst: 1
+  - src: 1
+    dst: 0
+  - src: 0
+    dst: 4
+  - src: 4
+    dst: 5
+  - src: 5
+    dst: 6
+  - src: 6
+    dst: 8
+  - src: 9
+    dst: 10
+  - src: 11
+    dst: 12
+  - src: 12
+    dst: 24
+  - src: 24
+    dst: 23
+  - src: 23
+    dst: 11
+  - src: 26
+    dst: 24
+  - src: 25
+    dst: 23
+  - src: 27
+    dst: 25
+  - src: 28
+    dst: 26
+  - src: 30
+    dst: 28
+  - src: 32
+    dst: 28
+  - src: 30
+    dst: 32
+  - src: 31
+    dst: 27
+  - src: 29
+    dst: 27
+  - src: 31
+    dst: 29
+  - src: 21
+    dst: 15
+  - src: 19
+    dst: 15
+  - src: 17
+    dst: 15
+  - src: 19
+    dst: 17
+  - src: 15
+    dst: 13
+  - src: 13
+    dst: 11
+  - src: 22
+    dst: 16
+  - src: 20
+    dst: 16
+  - src: 18
+    dst: 16
+  - src: 18
+    dst: 20
+  - src: 16
+    dst: 14
+  - src: 14
+    dst: 12
