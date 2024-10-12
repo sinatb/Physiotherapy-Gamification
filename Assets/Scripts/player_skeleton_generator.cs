@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,17 @@ public class player_skeleton_generator : MonoBehaviour
     public GameObject lr_prefab;
     public ConnectionMatrix connectionMatrix;
     public float scale;
+    public float visibility_treshold = 0.2f;
     private List<GameObject> joints;
     private List<GameObject> lr_list;
+    private Tuple<Vector3,Vector3> getSrcDstPos(int i)
+    {
+        var src_index = connectionMatrix.matrix[i].src;
+        var dst_index = connectionMatrix.matrix[i].dst;
+        var src_pos = joints[src_index].transform.position;
+        var dst_pos = joints[dst_index].transform.position;
+        return new Tuple<Vector3, Vector3> (src_pos, dst_pos);
+    }
     private void Start()
     {
         GameManager.update_data_event += update_data;
@@ -24,11 +34,8 @@ public class player_skeleton_generator : MonoBehaviour
         for (int i=0; i< connectionMatrix.matrix.Count; i++) 
         {
             var src_index = connectionMatrix.matrix[i].src;
-            var dst_index = connectionMatrix.matrix[i].dst;
-            var src_pos = joints[src_index].transform.position;
-            var dst_pos = joints[dst_index].transform.position;
-
-            var lr_obj = Instantiate(lr_prefab, src_pos, Quaternion.identity, joints[src_index].transform);
+            var pos = getSrcDstPos(i);
+            var lr_obj = Instantiate(lr_prefab, pos.Item1, Quaternion.identity, joints[src_index].transform);
             lr_list.Add(lr_obj);
         }
     }
@@ -36,22 +43,27 @@ public class player_skeleton_generator : MonoBehaviour
     {
         for(int i=0; i<pdl.points.Count;i++)
         {
+
+            if (pdl.points[i].visibility < visibility_treshold)
+            {
+                joints[i].SetActive(false);
+                continue;
+            }else if (pdl.points[i].visibility > visibility_treshold && !joints[i].activeSelf) 
+            {
+                joints[i].SetActive(true);
+            }
             var point = new Vector3(pdl.points[i].x * scale,
                                     -pdl.points[i].y * scale, 
                                     pdl.points[i].z * scale
                                     );
-            joints[i].transform.position = point;    
+            joints[i].transform.position = point;
         }
         for (int i = 0; i < connectionMatrix.matrix.Count; i++)
         {
             var lr = lr_list[i].GetComponent<LineRenderer>();
-            var src_index = connectionMatrix.matrix[i].src;
-            var dst_index = connectionMatrix.matrix[i].dst;
-            var src_pos = joints[src_index].transform.position;
-            var dst_pos = joints[dst_index].transform.position;
-
-            lr.SetPosition(0, src_pos);
-            lr.SetPosition(1, dst_pos);
+            var pos = getSrcDstPos(i);
+            lr.SetPosition(0, pos.Item1);
+            lr.SetPosition(1, pos.Item2);
         }
     }
 }
