@@ -13,12 +13,18 @@ public class player_skeleton_generator : MonoBehaviour
     public float visibility_treshold = 0.2f;
     private List<GameObject> joints;
     private List<GameObject> lr_list;
-    private Tuple<Vector3,Vector3> getSrcDstPos(int i)
+    
+    private Tuple<int,int> getSrcDstIndex(int i)
     {
         var src_index = connectionMatrix.matrix[i].src;
         var dst_index = connectionMatrix.matrix[i].dst;
-        var src_pos = joints[src_index].transform.position;
-        var dst_pos = joints[dst_index].transform.position;
+        return new Tuple<int, int>(src_index, dst_index);
+    }
+    private Tuple<Vector3,Vector3> getSrcDstPos(int i)
+    {
+        var indeces = getSrcDstIndex(i);
+        var src_pos = joints[indeces.Item1].transform.position;
+        var dst_pos = joints[indeces.Item2].transform.position;
         return new Tuple<Vector3, Vector3> (src_pos, dst_pos);
     }
     private void Start()
@@ -33,9 +39,9 @@ public class player_skeleton_generator : MonoBehaviour
         }
         for (int i=0; i< connectionMatrix.matrix.Count; i++) 
         {
-            var src_index = connectionMatrix.matrix[i].src;
+            var indeces = getSrcDstIndex(i);
             var pos = getSrcDstPos(i);
-            var lr_obj = Instantiate(lr_prefab, pos.Item1, Quaternion.identity, joints[src_index].transform);
+            var lr_obj = Instantiate(lr_prefab, pos.Item1, Quaternion.identity, joints[indeces.Item1].transform);
             lr_list.Add(lr_obj);
         }
     }
