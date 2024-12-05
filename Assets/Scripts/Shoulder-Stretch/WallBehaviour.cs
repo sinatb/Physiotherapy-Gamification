@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WallBehaviour : MonoBehaviour
 {
-    [SerializeField] private float mSpeed;
+    [SerializeField] private float speed;
     private Rigidbody _mRigidbody;
     
     private void Start()
@@ -16,6 +16,6 @@ public class WallBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         _mRigidbody.MovePosition(transform.position +
-                                 Vector3.back * (mSpeed * Time.fixedDeltaTime));
+                                 Vector3.back * (speed * Time.fixedDeltaTime));
     }
 }
