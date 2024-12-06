@@ -122,6 +122,59 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &268454393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 268454395}
+  - component: {fileID: 268454394}
+  m_Layer: 0
+  m_Name: DespawnPosition
+  m_TagString: Despawner
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &268454394
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268454393}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 20, y: 5, z: 1}
+  m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!4 &268454395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268454393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &434745482
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +315,10 @@ MonoBehaviour:
   wallOffset: 6
   spawnInterval: 2
   poolSize: 30
+  baseSpeed: 10
+  increaseTime: 10
+  increaseSpeed: 2
+  maximumIncrease: 34
 --- !u!1 &1407621244
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,18 +555,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 617854128034412462, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
-      propertyPath: m_Drag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7280649860932322450, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
-      propertyPath: speed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7280649860932322450, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
-      propertyPath: moveOffset
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 7900446184787143620, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -568,3 +613,4 @@ SceneRoots:
   - {fileID: 1544287919}
   - {fileID: 3902309139100213920}
   - {fileID: 1036217779}
+  - {fileID: 268454395}
