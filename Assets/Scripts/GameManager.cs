@@ -40,7 +40,8 @@ public class GameManager : MonoBehaviour
         var points = JsonUtil.DeserializeToList<PointData>(clean_data);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        server_debug_data.text = pdl.points[0].ToString();
+        if (server_debug_data != null)
+            server_debug_data.text = pdl.points[0].ToString();
         update_data_event.Invoke(pdl);
     }
 }
