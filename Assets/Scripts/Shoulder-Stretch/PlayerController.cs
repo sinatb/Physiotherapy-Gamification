@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,12 +13,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float moveOffset;
     [SerializeField] private float speed;
+    [SerializeField] private float changeTimer;
+    private float _timer;
     private Side _mSide = Side.Middle;
     private Rigidbody _mRigidBody;
-
+    private char _nextMove = 'm';
     private Dictionary<Side, Vector3> _positions;
     private void Awake()
     {
+        GameManager.UpdateDataEvent += UpdateData;
         _mRigidBody = GetComponent<Rigidbody>();
         _positions = new Dictionary<Side, Vector3>()
         {
@@ -42,12 +44,15 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.A))
+        _timer += Time.deltaTime;
+        if (Input.GetKeyUp(KeyCode.A) || _nextMove == 'l')
         {
             MoveLeft();
-        }else if (Input.GetKeyUp(KeyCode.D))
+            _nextMove = 'm';
+        }else if (Input.GetKeyUp(KeyCode.D) || _nextMove == 'r')
         {
             MoveRight();
+            _nextMove = 'm';
         }
     }
 
@@ -64,5 +69,29 @@ public class PlayerController : MonoBehaviour
             return;
         _mSide --;
     }
-    
+
+    private void UpdateData(PointDataList pdl)
+    {
+        if (_timer < changeTimer)
+            return;
+        _timer = 0.0f;
+        var rightHand = VectorUtil.MeanVector(new List<Vector3>()
+        {
+            pdl.points[15].Vect,
+            pdl.points[17].Vect,
+            pdl.points[19].Vect,
+        });
+        
+        var leftHand = VectorUtil.MeanVector(new List<Vector3>()
+        {
+            pdl.points[16].Vect,
+            pdl.points[18].Vect,
+            pdl.points[20].Vect,
+        });
+        
+        if (leftHand.x > pdl.points[11].x)
+            _nextMove = 'l';
+        else if (rightHand.x < pdl.points[12].x)
+            _nextMove = 'r';
+    }
 }

@@ -9,6 +9,7 @@ public class PointData
     public float y;
     public float z;
     public float visibility;
+    public Vector3 Vect => new Vector3(x, y, z);
 
     public override string ToString()
     {

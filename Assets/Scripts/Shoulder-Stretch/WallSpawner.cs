@@ -58,7 +58,6 @@ public class WallSpawner : MonoBehaviour
             side = Random.Range(-1, 2);
         }
         _history.Add(side);
-        Debug.Log(_history);
         var spawnpos = new Vector3(transform.position.x - side *wallOffset,
                                         1.5f,
                                         transform.position.z);

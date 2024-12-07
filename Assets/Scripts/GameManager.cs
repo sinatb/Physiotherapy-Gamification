@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -10,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [FormerlySerializedAs("server_debug_data")] [SerializeField]
     public TextMeshProUGUI serverDebugData;
     
     public delegate void UpdateData(PointDataList data);
