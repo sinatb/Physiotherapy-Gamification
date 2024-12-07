@@ -15,10 +15,11 @@ public class WallSpawner : MonoBehaviour
     private List<GameObject> _pool;
     private float _timer = 0.0f;
     private float _currentSpeed;
+    private CircularList<int> _history;
     private void Start()
     {
         _currentSpeed = baseSpeed;
-        
+        _history = new CircularList<int>(3);
         _pool = new List<GameObject>();
         GameObject tmp;
         for (var i = 0; i < poolSize; i++)
@@ -52,6 +53,12 @@ public class WallSpawner : MonoBehaviour
     private void SpawnWall()
     {
         var side = Random.Range(-1, 2);
+        while (_history.CountEquals(side) > 1)
+        {
+            side = Random.Range(-1, 2);
+        }
+        _history.Add(side);
+        Debug.Log(_history);
         var spawnpos = new Vector3(transform.position.x - side *wallOffset,
                                         1.5f,
                                         transform.position.z);
