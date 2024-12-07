@@ -8,12 +8,22 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public TextMeshProUGUI serverDebugData;
+    public TextMeshProUGUI playerScore;
+    private int _playerScoreValue;
     
     public delegate void UpdateData(PointDataList data);
     public static UpdateData UpdateDataEvent;
 
+    public void IncreaseScore()
+    {
+        _playerScoreValue++;
+        if (playerScore != null)
+            playerScore.text = "Score : " + _playerScoreValue;
+    }
     private void Awake()
     {
+        if (playerScore != null)
+            playerScore.text = "Score : 0";
         if (Instance == null)
         {
             Instance = this;

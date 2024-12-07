@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a513d504ba88c344d97dc77853a1d94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugData: {fileID: 0}
   moveOffset: 6
   speed: 12
-  changeTimer: 0.5
+  changeTimer: 0.8
