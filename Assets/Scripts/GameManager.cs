@@ -4,22 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
 
-    [SerializeField]
-    public TextMeshProUGUI server_debug_data;
+    [FormerlySerializedAs("server_debug_data")] [SerializeField]
+    public TextMeshProUGUI serverDebugData;
     
-    public delegate void update_data(PointDataList data);
-    public static update_data update_data_event;
+    public delegate void UpdateData(PointDataList data);
+    public static UpdateData UpdateDataEvent;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else{
             Destroy(gameObject);
@@ -27,21 +28,21 @@ public class GameManager : MonoBehaviour
     }
     public void update_client_data(string data)
     {
-        var clean_data = data.Substring(1, data.Length - 2);
-        var points = JsonUtil.DeserializeToList<PointData>(clean_data);
+        var cleanData = data.Substring(1, data.Length - 2);
+        var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        update_data_event.Invoke(pdl);
+        UpdateDataEvent.Invoke(pdl);
     }
 
     public void update_server_debug_data(string data)
     {
-        var clean_data = data.Substring(1, data.Length - 2);
-        var points = JsonUtil.DeserializeToList<PointData>(clean_data);
+        var cleanData = data.Substring(1, data.Length - 2);
+        var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        if (server_debug_data != null)
-            server_debug_data.text = pdl.points[0].ToString();
-        update_data_event.Invoke(pdl);
+        if (serverDebugData != null)
+            serverDebugData.text = pdl.points[0].ToString();
+        UpdateDataEvent.Invoke(pdl);
     }
 }
