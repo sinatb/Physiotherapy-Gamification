@@ -16,11 +16,14 @@ public class WallSpawner : MonoBehaviour
     private float _timer = 0.0f;
     private float _currentSpeed;
     private CircularList<int> _history;
+    private bool _isRunning = true;
     private void Start()
     {
         _currentSpeed = baseSpeed;
         _history = new CircularList<int>(3);
         _pool = new List<GameObject>();
+        GameManager.GameOverEvent += GameOverFunction;
+        GameManager.RestartEvent += RestartFunction;
         GameObject tmp;
         for (var i = 0; i < poolSize; i++)
         {
@@ -31,10 +34,23 @@ public class WallSpawner : MonoBehaviour
         InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
     }
 
+    private void RestartFunction()
+    {
+        _isRunning = true;
+        _timer = 0.0f;
+    }
+    private void GameOverFunction()
+    {
+        _isRunning = false;
+        foreach (var go in _pool)
+        {
+            go.SetActive(false);
+        }
+    }
     private void Update()
     {
         _timer += Time.deltaTime;
-        if (_timer >= spawnInterval)
+        if (_timer >= spawnInterval && _isRunning)
         {
             SpawnWall();
             _timer = 0.0f;

@@ -6,7 +6,8 @@ using UnityEngine.Serialization;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI highScoreText;
     public TextMeshProUGUI serverDebugData;
     public TextMeshProUGUI playerScore;
     private int _playerScoreValue;
@@ -14,6 +15,24 @@ public class GameManager : MonoBehaviour
     public delegate void UpdateData(PointDataList data);
     public static UpdateData UpdateDataEvent;
 
+    public delegate void GameOver();
+    public static GameOver GameOverEvent;
+
+    public delegate void Restart();
+    public static Restart RestartEvent;
+
+    public void RestartFunction()
+    {
+        RestartEvent?.Invoke();
+        gameOverPanel.SetActive(false);
+        _playerScoreValue = 0;
+        playerScore.text = "Score : " + _playerScoreValue;
+    }
+    private void GameOverFunction()
+    {
+        gameOverPanel.SetActive(true);
+        highScoreText.text = $"High Score: {_playerScoreValue}";
+    }
     public void IncreaseScore()
     {
         _playerScoreValue++;
@@ -24,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerScore != null)
             playerScore.text = "Score : 0";
+        GameOverEvent += GameOverFunction;
         if (Instance == null)
         {
             Instance = this;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,9 +20,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _mRigidBody;
     private char _nextMove = 'm';
     private Dictionary<Side, Vector3> _positions;
+    private bool _isRunning = true;
     private void Awake()
     {
         GameManager.UpdateDataEvent += UpdateData;
+        GameManager.GameOverEvent += GameOverFunction;
+        GameManager.RestartEvent += RestartFunction;
+        
         _mRigidBody = GetComponent<Rigidbody>();
         _positions = new Dictionary<Side, Vector3>()
         {
@@ -30,29 +35,44 @@ public class PlayerController : MonoBehaviour
             { Side.Right, new Vector3(moveOffset, 0.5f, 0)}
         };
     }
-    
+
+    private void RestartFunction()
+    {
+        _isRunning = true;
+    }
+    private void GameOverFunction()
+    {
+        _isRunning = false;
+    }
     private void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, _positions[_mSide]) == 0.0f)
-            return;
-        if (Vector3.Distance(transform.position, _positions[_mSide]) > 0.1f)
-            _mRigidBody.MovePosition(transform.position -
-                                     (transform.position - _positions[_mSide]).normalized *
-                                     (speed * Time.fixedDeltaTime));
-        else
-            _mRigidBody.MovePosition(_positions[_mSide]);
+        if (_isRunning)
+        {
+            if (Vector3.Distance(transform.position, _positions[_mSide]) == 0.0f)
+                return;
+            if (Vector3.Distance(transform.position, _positions[_mSide]) > 0.1f)
+                _mRigidBody.MovePosition(transform.position -
+                                         (transform.position - _positions[_mSide]).normalized *
+                                         (speed * Time.fixedDeltaTime));
+            else
+                _mRigidBody.MovePosition(_positions[_mSide]);
+        }
     }
     private void Update()
     {
-        _timer += Time.deltaTime;
-        if (Input.GetKeyUp(KeyCode.A) || _nextMove == 'l')
+        if (_isRunning)
         {
-            MoveLeft();
-            _nextMove = 'm';
-        }else if (Input.GetKeyUp(KeyCode.D) || _nextMove == 'r')
-        {
-            MoveRight();
-            _nextMove = 'm';
+            _timer += Time.deltaTime;
+            if (Input.GetKeyUp(KeyCode.A) || _nextMove == 'l')
+            {
+                MoveLeft();
+                _nextMove = 'm';
+            }
+            else if (Input.GetKeyUp(KeyCode.D) || _nextMove == 'r')
+            {
+                MoveRight();
+                _nextMove = 'm';
+            }
         }
     }
 
@@ -93,5 +113,13 @@ public class PlayerController : MonoBehaviour
             _nextMove = 'l';
         else if (rightHand.x < pdl.points[12].x)
             _nextMove = 'r';
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Wall"))
+        {
+            GameManager.GameOverEvent.Invoke();
+        }   
     }
 }
