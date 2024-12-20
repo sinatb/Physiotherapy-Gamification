@@ -256,5 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132077d6f98311045a10c6d111699eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spanMultiplier: 2
+  heightMultiplier: 3
   rHand: {fileID: 3577521172296989640}
   lHand: {fileID: 7478527761570589379}

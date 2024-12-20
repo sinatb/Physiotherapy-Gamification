@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class OHStretchController : MonoBehaviour
 {
+    [SerializeField] private float spanMultiplier;
+    [SerializeField] private float heightMultiplier;
     [SerializeField] private GameObject rHand;
     [SerializeField] private GameObject lHand;
 
@@ -30,6 +32,16 @@ public class OHStretchController : MonoBehaviour
             pdl.points[18].Vect,
             pdl.points[20].Vect,
         });
+        
+        rightHand.y = -rightHand.y;
+        leftHand.y = -leftHand.y;
+
+        rightHand.x *= spanMultiplier;
+        leftHand.x *= spanMultiplier;
+        
+        rightHand.y *= heightMultiplier;
+        leftHand.y *= heightMultiplier;
+        
         rHand.transform.position = rightHand;
         lHand.transform.position = leftHand;
     }
