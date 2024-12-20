@@ -1,25 +1,52 @@
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-
-    [SerializeField]
-    public TextMeshProUGUI server_debug_data;
+    public static GameManager Instance;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI serverDebugData;
+    public TextMeshProUGUI playerScore;
+    private int _playerScoreValue;
     
-    public delegate void update_data(PointDataList data);
-    public static update_data update_data_event;
+    public delegate void UpdateData(PointDataList data);
+    public static UpdateData UpdateDataEvent;
 
+    public delegate void GameOver();
+    public static GameOver GameOverEvent;
+
+    public delegate void Restart();
+    public static Restart RestartEvent;
+
+    public void RestartFunction()
+    {
+        RestartEvent?.Invoke();
+        gameOverPanel.SetActive(false);
+        _playerScoreValue = 0;
+        playerScore.text = "Score : " + _playerScoreValue;
+    }
+    private void GameOverFunction()
+    {
+        gameOverPanel.SetActive(true);
+        highScoreText.text = $"High Score: {_playerScoreValue}";
+    }
+    public void IncreaseScore()
+    {
+        _playerScoreValue++;
+        if (playerScore != null)
+            playerScore.text = "Score : " + _playerScoreValue;
+    }
     private void Awake()
     {
-        if (instance == null)
+        if (playerScore != null)
+            playerScore.text = "Score : 0";
+        GameOverEvent += GameOverFunction;
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else{
             Destroy(gameObject);
@@ -27,20 +54,21 @@ public class GameManager : MonoBehaviour
     }
     public void update_client_data(string data)
     {
-        var clean_data = data.Substring(1, data.Length - 2);
-        var points = JsonUtil.DeserializeToList<PointData>(clean_data);
+        var cleanData = data.Substring(1, data.Length - 2);
+        var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        update_data_event.Invoke(pdl);
+        UpdateDataEvent.Invoke(pdl);
     }
 
     public void update_server_debug_data(string data)
     {
-        var clean_data = data.Substring(1, data.Length - 2);
-        var points = JsonUtil.DeserializeToList<PointData>(clean_data);
+        var cleanData = data.Substring(1, data.Length - 2);
+        var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        server_debug_data.text = pdl.points[0].ToString();
-        update_data_event.Invoke(pdl);
+        if (serverDebugData != null)
+            serverDebugData.text = pdl.points[0].ToString();
+        UpdateDataEvent.Invoke(pdl);
     }
 }
