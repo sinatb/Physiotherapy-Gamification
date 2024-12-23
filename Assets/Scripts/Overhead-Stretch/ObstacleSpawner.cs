@@ -51,29 +51,29 @@ public class ObstacleSpawner : MonoBehaviour
     {
         var side = Random.Range(0, 3);
         
-        var w1 = GetPooledObject();
-        var w2 = GetPooledObject();
-
-        var spawnPosition1 = spawnPosition[side].transform.position;
-        var spawnPosition2 = spawnPosition[side].transform.position;
-        
         var horizontalCoef = 0.6f;
         if (side == 1)
             horizontalCoef = 1.0f;
         else if (side == 2)
             horizontalCoef = 2.0f;
         
+                
+        var w1 = GetPooledObject();
+        var spawnPosition1 = spawnPosition[side].transform.position;
         spawnPosition1.x += horizontalCoef;
-        spawnPosition2.x -= horizontalCoef;
-        
         w1.transform.position = spawnPosition1;
-        w2.transform.position = spawnPosition2;
-        
-        w1.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-        w2.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-        
+        w1.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+
         w1.SetActive(true);
+        
+        var w2 = GetPooledObject();
+        var spawnPosition2 = spawnPosition[side].transform.position;
+        spawnPosition2.x -= horizontalCoef;
+        w2.transform.position = spawnPosition2;
+        w2.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+        
         w2.SetActive(true);
+        
     }
     private void UpdateSpeed()
     {
@@ -87,7 +87,7 @@ public class ObstacleSpawner : MonoBehaviour
         foreach (var g in _pool)
         {
             if (g.activeInHierarchy)
-                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+                g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
         }
     }
     private void RestartFunction()
