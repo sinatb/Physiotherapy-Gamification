@@ -1,0 +1,34 @@
+using UnityEngine;
+
+public class ObstacleBehaviour : MonoBehaviour
+{
+    private Rigidbody _mRigidbody;
+    private float _speed;    
+    private void Start()
+    {
+        _mRigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        _mRigidbody.MovePosition(transform.position +
+                                 Vector3.back * (_speed * Time.fixedDeltaTime));
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            gameObject.SetActive(false);
+            GameManager.Instance.IncreaseScore();
+        }else if (other.gameObject.CompareTag("Despawner"))
+        {
+            GameManager.GameOverEvent.Invoke();
+        }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+    }
+}
