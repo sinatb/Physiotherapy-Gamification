@@ -1693,10 +1693,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98af7f3b3334b4b4fa39a7aaab29ae8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverPanel: {fileID: 1997763195}
-  highScoreText: {fileID: 1864024685}
   serverDebugData: {fileID: 0}
   playerScore: {fileID: 1431689965}
+  gameOverPanel: {fileID: 1997763195}
+  highScoreText: {fileID: 1864024685}
 --- !u!1001 &4377823880926163122
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,24 +3,31 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
+    public GameObject       obstaclePrefab;
     public List<GameObject> spawnPosition;
-    public int poolSize;
-    public float increaseSpeed;
-    public float maximumIncrease;
-    public float increaseTime;
-    public float spawnInterval;
-    public float baseSpeed;
+    public int              poolSize;
+    public float            increaseSpeed;
+    public float            maximumIncrease;
+    public float            increaseTime;
+    public float            spawnInterval;
+    public float            baseSpeed;
+    
     private List<GameObject> _pool;
-    private float _timer;
-    private bool _isRunning = true;
-    private float _currentSpeed;
-    private float _currentSpawnInterval;
+    private float            _timer;
+    private bool             _isRunning = true;
+    private float            _currentSpeed;
+    private float            _currentSpawnInterval;
+    
     private void Start()
     {
         _pool = new List<GameObject>();
         _currentSpeed = baseSpeed;
         _currentSpawnInterval = spawnInterval;
+        if (GameManager.Instance.Player != null)
+        {
+            
+        }
+        
         GameManager.GameOverEvent += GameOverFunction;
         GameManager.RestartEvent += RestartFunction;
         GameObject tmp;
@@ -32,6 +39,7 @@ public class ObstacleSpawner : MonoBehaviour
         }
         InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
     }
+    
     private void Update()
     {
         _timer += Time.deltaTime;
@@ -53,12 +61,12 @@ public class ObstacleSpawner : MonoBehaviour
     
     private void SpawnObstacle()
     {
-        var side = Random.Range(0, 3);
+        var side = Random.Range(0, 2);
         
         var horizontalCoef = 0.6f;
-        if (side == 1)
+        if (side == 0)
             horizontalCoef = 1.0f;
-        else if (side == 2)
+        else if (side == 1)
             horizontalCoef = 1.5f;
         
                 
