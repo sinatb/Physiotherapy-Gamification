@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     public delegate void Restart();
     public static Restart RestartEvent;
 
+    public delegate void IncreaseScore();
+    public static IncreaseScore IncreaseScoreEvent;
+
     #endregion
     public void RestartFunction()
     {
@@ -40,7 +43,7 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         highScoreText.text = $"Score: {_playerScoreValue}";
     }
-    public void IncreaseScore()
+    private void IncreaseScoreFunction()
     {
         _playerScoreValue++;
         if (playerScore != null)
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour
         if (playerScore != null)
             playerScore.text = "Score : 0";
         GameOverEvent += GameOverFunction;
+        IncreaseScoreEvent += IncreaseScoreFunction;
         if (Instance == null)
         {
             Instance = this;

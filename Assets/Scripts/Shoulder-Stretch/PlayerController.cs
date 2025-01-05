@@ -12,21 +12,25 @@ public class PlayerController : MonoBehaviour
         Right
     }
 
-    [SerializeField] private float moveOffset;
-    [SerializeField] private float speed;
-    [SerializeField] private float changeTimer;
-    private float _timer;
-    private Side _mSide = Side.Middle;
-    private Rigidbody _mRigidBody;
-    private char _nextMove = 'm';
+    [SerializeField] private float    moveOffset;
+    [SerializeField] private float    speed;
+    [SerializeField] private float    changeTimer;
+    private float                     _timer;
+    private Side                      _mSide = Side.Middle;
+    private Rigidbody                 _mRigidBody;
+    private char                      _nextMove = 'm';
     private Dictionary<Side, Vector3> _positions;
-    private bool _isRunning = true;
+    private bool                      _isRunning = true;
+    private AudioSource               _audioSource;
+    
+    
     private void Awake()
     {
         GameManager.UpdateDataEvent += UpdateData;
         GameManager.GameOverEvent += GameOverFunction;
         GameManager.RestartEvent += RestartFunction;
-        
+        GameManager.IncreaseScoreEvent += IncreaseScoreFunction;
+        _audioSource = GetComponent<AudioSource>();
         _mRigidBody = GetComponent<Rigidbody>();
         _positions = new Dictionary<Side, Vector3>()
         {
@@ -36,6 +40,10 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+    private void IncreaseScoreFunction()
+    {
+        _audioSource.PlayOneShot(_audioSource.clip);
+    }
     private void RestartFunction()
     {
         _isRunning = true;

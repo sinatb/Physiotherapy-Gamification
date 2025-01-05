@@ -20,7 +20,7 @@ public class ObstacleBehaviour : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             gameObject.SetActive(false);
-            GameManager.Instance.IncreaseScore();
+            GameManager.IncreaseScoreEvent.Invoke();
         }else if (other.gameObject.CompareTag("Despawner"))
         {
             GameManager.GameOverEvent.Invoke();
