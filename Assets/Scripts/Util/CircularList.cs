@@ -3,52 +3,57 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-public class CircularList<T>
+namespace Util
 {
-    private readonly List<T> _elements;
-    private readonly int _capacity;
-    private int _index;
-    
-    public CircularList(int capacity)
+    public class CircularList<T>
     {
-        if (capacity < 0)
-            throw new ArgumentException("Capacity cannot be negative", nameof(capacity));
-        _capacity = capacity;
-        _elements = new List<T>(capacity);
-        _index = 0;
-    }
+        private readonly List<T> _elements;
+        private readonly int     _capacity;
+        private int              _index;
 
-    public void Add(T element)
-    {
-        if (_elements.Count < _capacity)
+        public CircularList(int capacity)
         {
-            _elements.Add(element);
+            if (capacity < 0)
+                throw new ArgumentException("Capacity cannot be negative", nameof(capacity));
+            _capacity = capacity;
+            _elements = new List<T>(capacity);
+            _index = 0;
         }
-        else
-        {
-            _elements[_index] = element;
-            _index = (_index + 1) % _capacity;
-        }
-    }
 
-    public int CountEquals(T element)
-    {
-        var result = 0;
-        foreach (var e in _elements)
+        public void Add(T element)
         {
-            if (e.Equals(element))
-                result++;
+            if (_elements.Count < _capacity)
+            {
+                _elements.Add(element);
+            }
+            else
+            {
+                _elements[_index] = element;
+                _index = (_index + 1) % _capacity;
+            }
         }
-        return result;
-    }
 
-    public override string ToString()
-    {
-        var result = new StringBuilder();
-        foreach (var e in _elements)
+        public int CountEquals(T element)
         {
-            result.Append(e + ", ");
+            var result = 0;
+            foreach (var e in _elements)
+            {
+                if (e.Equals(element))
+                    result++;
+            }
+
+            return result;
         }
-        return result.ToString();
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            foreach (var e in _elements)
+            {
+                result.Append(e + ", ");
+            }
+
+            return result.ToString();
+        }
     }
 }
