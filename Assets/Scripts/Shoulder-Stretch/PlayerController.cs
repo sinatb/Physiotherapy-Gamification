@@ -24,6 +24,7 @@ namespace Shoulder_Stretch
         [SerializeField] private float           feedbackDuration;
         [SerializeField] private AudioClip       swipeSound;
         [SerializeField] private AudioClip       pointSound;
+        [SerializeField] private AudioClip       gameOverSound;
         private float                            _timer;
         private Side                             _mSide = Side.Middle;
         private Rigidbody                        _mRigidBody;
@@ -157,6 +158,7 @@ namespace Shoulder_Stretch
         {
             if (other.gameObject.CompareTag("Wall"))
             {
+                _audioSource.PlayOneShot(gameOverSound);   
                 GameManager.GameOverEvent.Invoke();
             }
         }
