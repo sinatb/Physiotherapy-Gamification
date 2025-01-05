@@ -912,6 +912,10 @@ MonoBehaviour:
   increaseTime: 10
   increaseSpeed: 2
   maximumIncrease: 34
+  dynamicDifficultyData:
+  - {fileID: 11400000, guid: ab4682999f962c249840305cab474ba5, type: 2}
+  - {fileID: 11400000, guid: 07668b32089c44943b9c8ee74b329868, type: 2}
+  - {fileID: 11400000, guid: ddb8d54c6dcd4244a952849b9f7e070c, type: 2}
 --- !u!1 &1253643578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,10 +1717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98af7f3b3334b4b4fa39a7aaab29ae8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverPanel: {fileID: 1402901149}
-  highScoreText: {fileID: 325223906}
   serverDebugData: {fileID: 0}
   playerScore: {fileID: 2065380720}
+  gameOverPanel: {fileID: 1402901149}
+  highScoreText: {fileID: 325223906}
 --- !u!4 &2129925534
 Transform:
   m_ObjectHideFlags: 0

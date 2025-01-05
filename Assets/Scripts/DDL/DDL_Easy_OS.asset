@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b9ca731615d05641b2cb695f9d953ae, type: 3}
-  m_Name: DDL_Easy
+  m_Name: DDL_Easy_OS
   m_EditorClassIdentifier: 
-  Min: 0
-  Max: 20
-  BaseSpeed: 5
-  BaseSpawnInterval: 5
+  min: 0
+  max: 20
+  baseSpeed: 5
+  baseSpawnInterval: 3

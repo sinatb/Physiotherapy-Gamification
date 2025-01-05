@@ -1,106 +1,124 @@
 using System.Collections.Generic;
+using DDL;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class WallSpawner : MonoBehaviour
+namespace Shoulder_Stretch
 {
-    public GameObject wallPrefab;
-    public float wallOffset;
-    public float spawnInterval;
-    public int poolSize;
-    public float baseSpeed;
-    public float increaseTime;
-    public float increaseSpeed;
-    public int maximumIncrease;
-    private List<GameObject> _pool;
-    private float _timer = 0.0f;
-    private float _currentSpeed;
-    private float _currentSpawnInterval;
-    private CircularList<int> _history;
-    private bool _isRunning = true;
-    private void Start()
+    public class WallSpawner : MonoBehaviour
     {
-        _currentSpeed = baseSpeed;
-        _currentSpawnInterval = spawnInterval;
-        _history = new CircularList<int>(3);
-        _pool = new List<GameObject>();
-        GameManager.GameOverEvent += GameOverFunction;
-        GameManager.RestartEvent += RestartFunction;
-        GameObject tmp;
-        for (var i = 0; i < poolSize; i++)
+        public GameObject    wallPrefab;
+        public float         wallOffset;
+        public float         spawnInterval;
+        public int           poolSize;
+        public float         baseSpeed;
+        public float         increaseTime;
+        public float         increaseSpeed;
+        public int           maximumIncrease;
+        public List<DdlData> dynamicDifficultyData;
+        
+        private List<GameObject>  _pool;
+        private float             _timer;
+        private float             _currentSpeed;
+        private float             _currentSpawnInterval;
+        private CircularList<int> _history;
+        private bool              _isRunning = true;
+        private void Start()
         {
-            tmp = Instantiate(wallPrefab);
-            tmp.SetActive(false);
-            _pool.Add(tmp);
+            _currentSpeed = baseSpeed;
+            _currentSpawnInterval = spawnInterval;
+            if (GameManager.Instance.Player != null)
+            {
+                foreach (var d in dynamicDifficultyData)
+                {
+                    if (d.InRange(GameManager.Instance.Player.HighScore))
+                    {
+                        _currentSpeed = d.baseSpeed;
+                        _currentSpawnInterval = d.baseSpawnInterval;
+                    }
+                }
+            }
+            _history = new CircularList<int>(3);
+            _pool = new List<GameObject>();
+            GameManager.GameOverEvent += GameOverFunction;
+            GameManager.RestartEvent += RestartFunction;
+            GameObject tmp;
+            for (var i = 0; i < poolSize; i++)
+            {
+                tmp = Instantiate(wallPrefab);
+                tmp.SetActive(false);
+                _pool.Add(tmp);
+            }
+            InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
-        InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
-    }
 
-    private void RestartFunction()
-    {
-        _isRunning = true;
-        _currentSpawnInterval = spawnInterval;
-        _currentSpeed = baseSpeed;
-        _timer = 0.0f;
-    }
-    private void GameOverFunction()
-    {
-        _isRunning = false;
-        foreach (var go in _pool)
+        private void RestartFunction()
         {
-            go.SetActive(false);
-        }
-    }
-    private void Update()
-    {
-        _timer += Time.deltaTime;
-        if (_timer >= _currentSpawnInterval && _isRunning)
-        {
-            SpawnWall();
+            _isRunning = true;
+            _currentSpawnInterval = spawnInterval;
+            _currentSpeed = baseSpeed;
             _timer = 0.0f;
         }
-    }
+        private void GameOverFunction()
+        {
+            _isRunning = false;
+            foreach (var go in _pool)
+            {
+                go.SetActive(false);
+            }
+        }
+        private void Update()
+        {
+            _timer += Time.deltaTime;
+            if (_timer >= _currentSpawnInterval && _isRunning)
+            {
+                SpawnWall();
+                _timer = 0.0f;
+            }
+        }
 
-    private GameObject GetPooledObject()
-    {
-        foreach (var g in _pool)
+        private GameObject GetPooledObject()
         {
-            if (!g.activeInHierarchy)
-                return g;
+            foreach (var g in _pool)
+            {
+                if (!g.activeInHierarchy)
+                    return g;
+            }
+            return null;
         }
-        return null;
-    }
-    private void SpawnWall()
-    {
-        var side = Random.Range(-1, 2);
-        while (_history.CountEquals(side) > 1)
+        private void SpawnWall()
         {
-            side = Random.Range(-1, 2);
+            var side = Random.Range(-1, 2);
+            while (_history.CountEquals(side) > 1)
+            {
+                side = Random.Range(-1, 2);
+            }
+            _history.Add(side);
+            var spawnpos = new Vector3(transform.position.x - side *wallOffset,
+                                            1.5f,
+                                            transform.position.z);
+            GameObject wall = GetPooledObject();
+            wall.transform.position = spawnpos;
+            wall.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+            wall.SetActive(true);
         }
-        _history.Add(side);
-        var spawnpos = new Vector3(transform.position.x - side *wallOffset,
-                                        1.5f,
-                                        transform.position.z);
-        GameObject wall = GetPooledObject();
-        wall.transform.position = spawnpos;
-        wall.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-        wall.SetActive(true);
-    }
 
-    private void UpdateSpeed()
-    {
-        if (_currentSpeed + increaseSpeed > maximumIncrease)
+        private void UpdateSpeed()
         {
-            CancelInvoke(nameof(UpdateSpeed));
-            return;
+            if (_currentSpeed + increaseSpeed > maximumIncrease)
+            {
+                CancelInvoke(nameof(UpdateSpeed));
+                return;
+            }
+            _currentSpeed += increaseSpeed;
+            _currentSpawnInterval -= 0.1f;
+            foreach (var g in _pool)
+            {
+                if (g.activeInHierarchy)
+                    g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+            }
         }
-        _currentSpeed += increaseSpeed;
-        _currentSpawnInterval -= 0.1f;
-        foreach (var g in _pool)
-        {
-            if (g.activeInHierarchy)
-                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-        }
+        
     }
-    
 }
+

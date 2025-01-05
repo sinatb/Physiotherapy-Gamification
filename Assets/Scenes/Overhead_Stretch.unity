@@ -927,7 +927,10 @@ MonoBehaviour:
   increaseTime: 10
   spawnInterval: 3
   baseSpeed: 5
-  dynamicDifficultyData: []
+  dynamicDifficultyData:
+  - {fileID: 11400000, guid: e81d5ab3c731620428e936c49d4595c3, type: 2}
+  - {fileID: 11400000, guid: 3282be05a5824dd47b48294faab33449, type: 2}
+  - {fileID: 11400000, guid: 2661230d5f2db084bba0751aa8c8c880, type: 2}
 --- !u!1 &1431689963
 GameObject:
   m_ObjectHideFlags: 0

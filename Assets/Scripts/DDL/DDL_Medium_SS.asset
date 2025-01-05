@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b9ca731615d05641b2cb695f9d953ae, type: 3}
-  m_Name: DDL_Medium
+  m_Name: DDL_Medium_SS
   m_EditorClassIdentifier: 
-  Min: 21
-  Max: 50
-  BaseSpeed: 7
-  BaseSpawnInterval: 3
+  min: 21
+  max: 50
+  baseSpeed: 15
+  baseSpawnInterval: 2.5
