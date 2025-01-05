@@ -12,16 +12,18 @@ public class PlayerController : MonoBehaviour
         Right
     }
 
-    [SerializeField] private float    moveOffset;
-    [SerializeField] private float    speed;
-    [SerializeField] private float    changeTimer;
-    private float                     _timer;
-    private Side                      _mSide = Side.Middle;
-    private Rigidbody                 _mRigidBody;
-    private char                      _nextMove = 'm';
-    private Dictionary<Side, Vector3> _positions;
-    private bool                      _isRunning = true;
-    private AudioSource               _audioSource;
+    [SerializeField] private float     moveOffset;
+    [SerializeField] private float     speed;
+    [SerializeField] private float     changeTimer;
+    [SerializeField] private AudioClip swipeSound;
+    [SerializeField] private AudioClip pointSound;
+    private float                      _timer;
+    private Side                       _mSide = Side.Middle;
+    private Rigidbody                  _mRigidBody;
+    private char                       _nextMove = 'm';
+    private Dictionary<Side, Vector3>  _positions;
+    private bool                       _isRunning = true;
+    private AudioSource                _audioSource;
     
     
     private void Awake()
@@ -42,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private void IncreaseScoreFunction()
     {
-        _audioSource.PlayOneShot(_audioSource.clip);
+        _audioSource.PlayOneShot(pointSound);
     }
     private void RestartFunction()
     {
@@ -73,11 +75,13 @@ public class PlayerController : MonoBehaviour
             _timer += Time.deltaTime;
             if (Input.GetKeyUp(KeyCode.A) || _nextMove == 'l')
             {
+                _audioSource.PlayOneShot(swipeSound);
                 MoveLeft();
                 _nextMove = 'm';
             }
             else if (Input.GetKeyUp(KeyCode.D) || _nextMove == 'r')
             {
+                _audioSource.PlayOneShot(swipeSound);
                 MoveRight();
                 _nextMove = 'm';
             }
