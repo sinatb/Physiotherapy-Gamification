@@ -1,4 +1,5 @@
 using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,11 +7,17 @@ using UnityEngine.Serialization;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private GameObject gameOverPanel;
+    
+    public PlayerData                        Player;
+    public TextMeshProUGUI                   serverDebugData;
+    public TextMeshProUGUI                   playerScore;
+    
+    [SerializeField] private GameObject      gameOverPanel;
     [SerializeField] private TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI serverDebugData;
-    public TextMeshProUGUI playerScore;
-    private int _playerScoreValue;
+    
+    private int                              _playerScoreValue;
+
+    #region events
     
     public delegate void UpdateData(PointDataList data);
     public static UpdateData UpdateDataEvent;
@@ -21,6 +28,7 @@ public class GameManager : MonoBehaviour
     public delegate void Restart();
     public static Restart RestartEvent;
 
+    #endregion
     public void RestartFunction()
     {
         RestartEvent?.Invoke();
@@ -51,6 +59,11 @@ public class GameManager : MonoBehaviour
         else{
             Destroy(gameObject);
         }
+    }
+
+    public void set_player_data(string data)
+    {
+        Player = JsonConvert.DeserializeObject<PlayerData>(data);
     }
     public void update_client_data(string data)
     {

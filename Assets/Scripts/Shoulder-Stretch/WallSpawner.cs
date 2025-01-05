@@ -15,11 +15,13 @@ public class WallSpawner : MonoBehaviour
     private List<GameObject> _pool;
     private float _timer = 0.0f;
     private float _currentSpeed;
+    private float _currentSpawnInterval;
     private CircularList<int> _history;
     private bool _isRunning = true;
     private void Start()
     {
         _currentSpeed = baseSpeed;
+        _currentSpawnInterval = spawnInterval;
         _history = new CircularList<int>(3);
         _pool = new List<GameObject>();
         GameManager.GameOverEvent += GameOverFunction;
@@ -37,6 +39,8 @@ public class WallSpawner : MonoBehaviour
     private void RestartFunction()
     {
         _isRunning = true;
+        _currentSpawnInterval = spawnInterval;
+        _currentSpeed = baseSpeed;
         _timer = 0.0f;
     }
     private void GameOverFunction()
@@ -50,7 +54,7 @@ public class WallSpawner : MonoBehaviour
     private void Update()
     {
         _timer += Time.deltaTime;
-        if (_timer >= spawnInterval && _isRunning)
+        if (_timer >= _currentSpawnInterval && _isRunning)
         {
             SpawnWall();
             _timer = 0.0f;
@@ -91,7 +95,7 @@ public class WallSpawner : MonoBehaviour
             return;
         }
         _currentSpeed += increaseSpeed;
-        spawnInterval -= 0.1f;
+        _currentSpawnInterval -= 0.1f;
         foreach (var g in _pool)
         {
             if (g.activeInHierarchy)

@@ -10,13 +10,17 @@ public class ObstacleSpawner : MonoBehaviour
     public float maximumIncrease;
     public float increaseTime;
     public float spawnInterval;
+    public float baseSpeed;
     private List<GameObject> _pool;
     private float _timer;
     private bool _isRunning = true;
     private float _currentSpeed;
+    private float _currentSpawnInterval;
     private void Start()
     {
         _pool = new List<GameObject>();
+        _currentSpeed = baseSpeed;
+        _currentSpawnInterval = spawnInterval;
         GameManager.GameOverEvent += GameOverFunction;
         GameManager.RestartEvent += RestartFunction;
         GameObject tmp;
@@ -31,7 +35,7 @@ public class ObstacleSpawner : MonoBehaviour
     private void Update()
     {
         _timer += Time.deltaTime;
-        if (_timer >= spawnInterval && _isRunning)
+        if (_timer >= _currentSpawnInterval && _isRunning)
         {
             SpawnObstacle();    
             _timer = 0.0f;
@@ -55,7 +59,7 @@ public class ObstacleSpawner : MonoBehaviour
         if (side == 1)
             horizontalCoef = 1.0f;
         else if (side == 2)
-            horizontalCoef = 2.0f;
+            horizontalCoef = 1.5f;
         
                 
         var w1 = GetPooledObject();
@@ -83,7 +87,7 @@ public class ObstacleSpawner : MonoBehaviour
             return;
         }
         _currentSpeed += increaseSpeed;
-        spawnInterval -= 0.1f;
+        _currentSpawnInterval -= 0.1f;
         foreach (var g in _pool)
         {
             if (g.activeInHierarchy)
@@ -92,6 +96,8 @@ public class ObstacleSpawner : MonoBehaviour
     }
     private void RestartFunction()
     {
+        _currentSpeed = baseSpeed;
+        _currentSpawnInterval = spawnInterval;
         _isRunning = true;
         _timer = 0.0f;
     }
