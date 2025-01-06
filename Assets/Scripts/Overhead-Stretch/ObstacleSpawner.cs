@@ -6,15 +6,15 @@ namespace Overhead_Stretch
 {
     public class ObstacleSpawner : MonoBehaviour
     {
-        public GameObject       obstaclePrefab;
-        public List<GameObject> spawnPosition;
-        public int              poolSize;
-        public float            increaseSpeed;
-        public float            maximumIncrease;
-        public float            increaseTime;
-        public float            spawnInterval;
-        public float            baseSpeed;
-        public List<DdlData>    dynamicDifficultyData;
+        public GameObject        obstaclePrefab;
+        public List<GameObject>  spawnPosition;
+        public int               poolSize;
+        public float             increaseSpeed;
+        public float             maximumIncrease;
+        public float             increaseTime;
+        public float             spawnInterval;
+        public float             baseSpeed;
+        public List<DdlData>     dynamicDifficultyData;
         
         private List<GameObject> _pool;
         private float            _timer;
@@ -39,8 +39,8 @@ namespace Overhead_Stretch
                 }
             }
             
-            GameManager.GameOverEvent += GameOverFunction;
-            GameManager.RestartEvent += RestartFunction;
+            GameManager.GameOverEvent += OnGameOver;
+            GameManager.RestartEvent += OnRestart;
             GameObject tmp;
             for (var i = 0; i < poolSize; i++)
             {
@@ -72,11 +72,11 @@ namespace Overhead_Stretch
         {
             var side = Random.Range(0, 2);
             
-            var horizontalCoef = 0.6f;
+            var horizontalCoef = 0.0f;
             if (side == 0)
                 horizontalCoef = 1.0f;
             else if (side == 1)
-                horizontalCoef = 1.5f;
+                horizontalCoef = 1.4f;
             
                     
             var w1 = GetPooledObject();
@@ -111,14 +111,14 @@ namespace Overhead_Stretch
                     g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
             }
         }
-        private void RestartFunction()
+        private void OnRestart()
         {
             _currentSpeed = baseSpeed;
             _currentSpawnInterval = spawnInterval;
             _isRunning = true;
             _timer = 0.0f;
         }
-        private void GameOverFunction()
+        private void OnGameOver()
         {
             _isRunning = false;
             foreach (var go in _pool)

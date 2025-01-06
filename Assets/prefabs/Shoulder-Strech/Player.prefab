@@ -391,6 +391,7 @@ MonoBehaviour:
   feedbackDuration: 0.5
   swipeSound: {fileID: 8300000, guid: 573951d8cadad5e42b890698a39617d0, type: 3}
   pointSound: {fileID: 8300000, guid: 4f697f096cf17844ba0069bbfae47d9a, type: 3}
+  gameOverSound: {fileID: 8300000, guid: b1dc9d17f0a6fc744a2692de66a977d5, type: 3}
 --- !u!82 &1387809176692003534
 AudioSource:
   m_ObjectHideFlags: 0

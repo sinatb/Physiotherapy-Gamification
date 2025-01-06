@@ -1876,10 +1876,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 434745484}
-    - target: {fileID: 7280649860932322450, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
-      propertyPath: gameOverSound
-      value: 
-      objectReference: {fileID: 8300000, guid: b1dc9d17f0a6fc744a2692de66a977d5, type: 3}
     - target: {fileID: 7900446184787143620, guid: 1b09d1dc16a9f344bb7c41eea298e823, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
