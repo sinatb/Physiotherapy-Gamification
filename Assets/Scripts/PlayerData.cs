@@ -1,4 +1,5 @@
 public class PlayerData
 {
-    public int HighScore;
+    public string Token;
+    public int    HighScore;
 }
