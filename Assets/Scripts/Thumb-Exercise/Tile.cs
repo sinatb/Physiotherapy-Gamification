@@ -6,16 +6,23 @@ namespace Thumb_Exercise
 {
     public class Tile : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        private Rigidbody _mRigidbody;
+        private float     _speed = 10.0f;
 
+        private void Start()
+        {
+            _mRigidbody = GetComponent<Rigidbody>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void FixedUpdate()
         {
-
+            _mRigidbody.MovePosition(transform.position +
+                                     Vector3.down * (_speed * Time.fixedDeltaTime));
+        }
+        
+        public void SetSpeed(float speed)
+        {
+            _speed = speed;
         }
     }
 }

@@ -8,10 +8,8 @@ namespace Shoulder_Stretch
 {
     public class WallSpawner : MonoBehaviour
     {
-        public GameObject    wallPrefab;
         public float         wallOffset;
         public float         spawnInterval;
-        public int           poolSize;
         public float         baseSpeed;
         public float         increaseTime;
         public float         increaseSpeed;
@@ -40,19 +38,19 @@ namespace Shoulder_Stretch
                 }
             }
             _history = new CircularList<int>(3);
-            GameManager.GameOverEvent += GameOverFunction;
-            GameManager.RestartEvent += RestartFunction;
+            GameManager.GameOverEvent += OnGameOver;
+            GameManager.RestartEvent += OnRestart;
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
 
-        private void RestartFunction()
+        private void OnRestart()
         {
             _isRunning = true;
             _currentSpawnInterval = spawnInterval;
             _currentSpeed = baseSpeed;
             _timer = 0.0f;
         }
-        private void GameOverFunction()
+        private void OnGameOver()
         {
             _isRunning = false;
             pool.DeactivateObjects();

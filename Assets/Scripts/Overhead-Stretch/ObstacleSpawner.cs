@@ -7,9 +7,7 @@ namespace Overhead_Stretch
 {
     public class ObstacleSpawner : MonoBehaviour
     {
-        public GameObject        obstaclePrefab;
         public List<GameObject>  spawnPosition;
-        public int               poolSize;
         public float             increaseSpeed;
         public float             maximumIncrease;
         public float             increaseTime;
