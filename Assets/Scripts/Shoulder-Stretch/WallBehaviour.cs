@@ -20,7 +20,7 @@ public class WallBehaviour : MonoBehaviour
         if (other.gameObject.CompareTag("Despawner"))
         {
             gameObject.SetActive(false);
-            GameManager.Instance.IncreaseScore();
+            GameManager.IncreaseScoreEvent.Invoke();
         }
     }
 

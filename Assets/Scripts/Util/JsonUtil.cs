@@ -1,20 +1,21 @@
 using Newtonsoft.Json.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class JsonUtil 
+namespace Util
 {
-    public static IList<T> DeserializeToList<T>(string jsonString)
+    public class JsonUtil
     {
-        var arr = JArray.Parse(jsonString);
-        IList<T> objects = new List<T>();
-
-        foreach (var item in arr)
+        public static IList<T> DeserializeToList<T>(string jsonString)
         {
-            objects.Add(item.ToObject<T>());
-        }
-        return objects;
-    }
+            var arr = JArray.Parse(jsonString);
+            IList<T> objects = new List<T>();
 
+            foreach (var item in arr)
+            {
+                objects.Add(item.ToObject<T>());
+            }
+
+            return objects;
+        }
+    }
 }

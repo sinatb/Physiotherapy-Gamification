@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-public class VectorUtil
+
+namespace Util
 {
-        public static Vector3 MeanVector(List<Vector3> vectors)
+        public class VectorUtil
         {
-                var mean = Vector3.zero;
-                foreach (var v in vectors)
+                public static Vector3 MeanVector(List<Vector3> vectors)
                 {
-                        mean += v;
+                        var mean = Vector3.zero;
+                        foreach (var v in vectors)
+                        {
+                                mean += v;
+                        }
+
+                        return mean / vectors.Count;
                 }
-                return mean / vectors.Count;
-        } 
+        }
 }
