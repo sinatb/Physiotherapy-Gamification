@@ -41,8 +41,8 @@ namespace Shoulder_Stretch
             }
             _history = new CircularList<int>(3);
             _pool = new List<GameObject>();
-            GameManager.GameOverEvent += GameOverFunction;
-            GameManager.RestartEvent += RestartFunction;
+            GameManager.GameOverEvent += OnGameOver;
+            GameManager.RestartEvent += OnRestart;
             GameObject tmp;
             for (var i = 0; i < poolSize; i++)
             {
@@ -53,14 +53,14 @@ namespace Shoulder_Stretch
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
 
-        private void RestartFunction()
+        private void OnRestart()
         {
             _isRunning = true;
             _currentSpawnInterval = spawnInterval;
             _currentSpeed = baseSpeed;
             _timer = 0.0f;
         }
-        private void GameOverFunction()
+        private void OnGameOver()
         {
             _isRunning = false;
             foreach (var go in _pool)
