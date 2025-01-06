@@ -44,7 +44,8 @@ public class GameManager : MonoBehaviour
     private void OnGameOver()
     {
         gameOverPanel.SetActive(true);
-        PostHighScore();
+        if (Player != null)
+            PostHighScore();
         highScoreText.text = $"Score: {_playerScoreValue}";
     }
     private void OnIncreaseScore()
