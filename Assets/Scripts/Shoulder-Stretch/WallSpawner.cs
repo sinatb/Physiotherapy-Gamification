@@ -17,8 +17,8 @@ namespace Shoulder_Stretch
         public float         increaseSpeed;
         public int           maximumIncrease;
         public List<DdlData> dynamicDifficultyData;
+        public ObjectPool    pool;
         
-        private List<GameObject>  _pool;
         private float             _timer;
         private float             _currentSpeed;
         private float             _currentSpawnInterval;
@@ -40,16 +40,8 @@ namespace Shoulder_Stretch
                 }
             }
             _history = new CircularList<int>(3);
-            _pool = new List<GameObject>();
             GameManager.GameOverEvent += GameOverFunction;
             GameManager.RestartEvent += RestartFunction;
-            GameObject tmp;
-            for (var i = 0; i < poolSize; i++)
-            {
-                tmp = Instantiate(wallPrefab);
-                tmp.SetActive(false);
-                _pool.Add(tmp);
-            }
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
 
@@ -63,10 +55,7 @@ namespace Shoulder_Stretch
         private void GameOverFunction()
         {
             _isRunning = false;
-            foreach (var go in _pool)
-            {
-                go.SetActive(false);
-            }
+            pool.DeactivateObjects();
         }
         private void Update()
         {
@@ -77,16 +66,7 @@ namespace Shoulder_Stretch
                 _timer = 0.0f;
             }
         }
-
-        private GameObject GetPooledObject()
-        {
-            foreach (var g in _pool)
-            {
-                if (!g.activeInHierarchy)
-                    return g;
-            }
-            return null;
-        }
+        
         private void SpawnWall()
         {
             var side = Random.Range(-1, 2);
@@ -98,7 +78,7 @@ namespace Shoulder_Stretch
             var spawnpos = new Vector3(transform.position.x - side *wallOffset,
                                             1.5f,
                                             transform.position.z);
-            GameObject wall = GetPooledObject();
+            GameObject wall = pool.GetPooledObject();
             wall.transform.position = spawnpos;
             wall.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
             wall.SetActive(true);
@@ -113,10 +93,10 @@ namespace Shoulder_Stretch
             }
             _currentSpeed += increaseSpeed;
             _currentSpawnInterval -= 0.1f;
-            foreach (var g in _pool)
+            var active = pool.GetActiveObjects();
+            foreach (var g in active)
             {
-                if (g.activeInHierarchy)
-                    g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
             }
         }
         

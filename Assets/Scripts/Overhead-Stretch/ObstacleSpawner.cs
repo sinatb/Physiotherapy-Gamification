@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DDL;
 using UnityEngine;
+using Util;
 
 namespace Overhead_Stretch
 {
@@ -15,8 +16,8 @@ namespace Overhead_Stretch
         public float             spawnInterval;
         public float             baseSpeed;
         public List<DdlData>     dynamicDifficultyData;
+        public ObjectPool        pool;
         
-        private List<GameObject> _pool;
         private float            _timer;
         private bool             _isRunning = true;
         private float            _currentSpeed;
@@ -24,7 +25,6 @@ namespace Overhead_Stretch
         
         private void Start()
         {
-            _pool = new List<GameObject>();
             _currentSpeed = baseSpeed;
             _currentSpawnInterval = spawnInterval;
             if (GameManager.Instance.Player != null)
@@ -41,13 +41,6 @@ namespace Overhead_Stretch
             
             GameManager.GameOverEvent += OnGameOver;
             GameManager.RestartEvent += OnRestart;
-            GameObject tmp;
-            for (var i = 0; i < poolSize; i++)
-            {
-                tmp = Instantiate(obstaclePrefab);
-                tmp.SetActive(false);
-                _pool.Add(tmp);
-            }
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
         private void Update()
@@ -59,15 +52,7 @@ namespace Overhead_Stretch
                 _timer = 0.0f;
             }
         }
-        private GameObject GetPooledObject()
-        {
-            foreach (var g in _pool)
-            {
-                if (!g.activeInHierarchy)
-                    return g;
-            }
-            return null;
-        }
+
         private void SpawnObstacle()
         {
             var side = Random.Range(0, 2);
@@ -79,7 +64,7 @@ namespace Overhead_Stretch
                 horizontalCoef = 1.4f;
             
                     
-            var w1 = GetPooledObject();
+            var w1 = pool.GetPooledObject();
             var spawnPosition1 = spawnPosition[side].transform.position;
             spawnPosition1.x += horizontalCoef;
             w1.transform.position = spawnPosition1;
@@ -87,7 +72,7 @@ namespace Overhead_Stretch
 
             w1.SetActive(true);
             
-            var w2 = GetPooledObject();
+            var w2 = pool.GetPooledObject();
             var spawnPosition2 = spawnPosition[side].transform.position;
             spawnPosition2.x -= horizontalCoef;
             w2.transform.position = spawnPosition2;
@@ -105,10 +90,10 @@ namespace Overhead_Stretch
             }
             _currentSpeed += increaseSpeed;
             _currentSpawnInterval -= 0.1f;
-            foreach (var g in _pool)
+            var active = pool.GetActiveObjects();
+            foreach (var g in active)
             {
-                if (g.activeInHierarchy)
-                    g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+                g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
             }
         }
         private void OnRestart()
@@ -121,10 +106,7 @@ namespace Overhead_Stretch
         private void OnGameOver()
         {
             _isRunning = false;
-            foreach (var go in _pool)
-            {
-                go.SetActive(false);
-            }
+            pool.DeactivateObjects();
         }
     }
 }
