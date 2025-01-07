@@ -11,21 +11,22 @@ namespace Overhead_Stretch
         public float             increaseSpeed;
         public float             maximumIncrease;
         public float             increaseTime;
-        public float             spawnInterval;
-        public float             baseSpeed;
         public List<DdlData>     dynamicDifficultyData;
         public ObjectPool        pool;
         
         private float            _timer;
-        private bool             _isRunning = true;
+        private DdlData          _currentDdl;
+        private bool             _isRunning = false;
         private float            _currentSpeed;
         private float            _currentSpawnInterval;
         
         private void Start()
         {
-            _currentSpeed = baseSpeed;
-            _currentSpawnInterval = spawnInterval;
-            
+            if (_currentDdl != null)
+            {
+                _currentSpeed = _currentDdl.baseSpeed;
+                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
+            }
             GameManager.GameOverEvent += OnGameOver;
             GameManager.RestartEvent += OnRestart;
             GameManager.DdlSetEvent += OnDdlSet;
@@ -34,13 +35,22 @@ namespace Overhead_Stretch
         private void Update()
         {
             _timer += Time.deltaTime;
+            if (_currentDdl != null)
+            {
+                _isRunning = true;
+            }else if (_timer >= 5.0f)
+            {
+                _currentDdl = dynamicDifficultyData[0];
+                _currentSpeed = _currentDdl.baseSpeed;
+                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
+                _isRunning = true;
+            }
             if (_timer >= _currentSpawnInterval && _isRunning)
             {
                 SpawnObstacle();    
                 _timer = 0.0f;
             }
         }
-
         private void SpawnObstacle()
         {
             var side = Random.Range(0, 2);
@@ -86,8 +96,8 @@ namespace Overhead_Stretch
         }
         private void OnRestart()
         {
-            _currentSpeed = baseSpeed;
-            _currentSpawnInterval = spawnInterval;
+            _currentSpeed = _currentDdl.baseSpeed;
+            _currentSpawnInterval = _currentDdl.baseSpawnInterval;
             _isRunning = true;
             _timer = 0.0f;
         }
@@ -96,7 +106,6 @@ namespace Overhead_Stretch
             _isRunning = false;
             pool.DeactivateObjects();
         }
-
         private void OnDdlSet()
         {
             if (GameManager.Instance.Player != null)
@@ -107,8 +116,7 @@ namespace Overhead_Stretch
                     {
                         _currentSpeed = d.baseSpeed;
                         _currentSpawnInterval = d.baseSpawnInterval;
-                        baseSpeed = d.baseSpeed;
-                        spawnInterval = d.baseSpawnInterval;
+                        _currentDdl = d;
                     }
                 }
             }

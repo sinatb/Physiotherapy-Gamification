@@ -156,9 +156,11 @@ MonoBehaviour:
   - {fileID: 250931437}
   - {fileID: 1448458220}
   - {fileID: 1160332897}
-  baseSpeed: 5
-  spawnInterval: 2
   pool: {fileID: 1418190592}
+  dynamicDifficultyData:
+  - {fileID: 11400000, guid: 98df451d7dcbbe74b8464ecb80b4a63d, type: 2}
+  - {fileID: 11400000, guid: 45713be2921afe444893914b1d3c6152, type: 2}
+  - {fileID: 11400000, guid: b466ed3b330515d4a878459c6857f42a, type: 2}
 --- !u!4 &49228256
 Transform:
   m_ObjectHideFlags: 0

@@ -9,8 +9,6 @@ namespace Shoulder_Stretch
     public class WallSpawner : MonoBehaviour
     {
         public float         wallOffset;
-        public float         spawnInterval;
-        public float         baseSpeed;
         public float         increaseTime;
         public float         increaseSpeed;
         public int           maximumIncrease;
@@ -18,14 +16,18 @@ namespace Shoulder_Stretch
         public ObjectPool    pool;
         
         private float             _timer;
+        private DdlData           _currentDdl;
         private float             _currentSpeed;
         private float             _currentSpawnInterval;
         private CircularList<int> _history;
-        private bool              _isRunning = true;
+        private bool              _isRunning = false;
         private void Start()
         {
-            _currentSpeed = baseSpeed;
-            _currentSpawnInterval = spawnInterval;
+            if (_currentDdl != null)
+            {
+                _currentSpeed = _currentDdl.baseSpeed;
+                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
+            }
             _history = new CircularList<int>(3);
             GameManager.GameOverEvent += OnGameOver;
             GameManager.RestartEvent += OnRestart;
@@ -33,12 +35,11 @@ namespace Shoulder_Stretch
 
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
-
         private void OnRestart()
         {
             _isRunning = true;
-            _currentSpawnInterval = spawnInterval;
-            _currentSpeed = baseSpeed;
+            _currentSpawnInterval = _currentDdl.baseSpawnInterval;
+            _currentSpeed = _currentDdl.baseSpeed;
             _timer = 0.0f;
         }
         private void OnGameOver()
@@ -46,7 +47,6 @@ namespace Shoulder_Stretch
             _isRunning = false;
             pool.DeactivateObjects();
         }
-
         private void OnDdlSet()
         {
             if (GameManager.Instance.Player != null)
@@ -57,8 +57,6 @@ namespace Shoulder_Stretch
                     {
                         _currentSpeed = d.baseSpeed;
                         _currentSpawnInterval = d.baseSpawnInterval;
-                        baseSpeed = d.baseSpeed;
-                        spawnInterval = d.baseSpawnInterval;
                     }
                 }
             }
@@ -71,13 +69,22 @@ namespace Shoulder_Stretch
         private void Update()
         {
             _timer += Time.deltaTime;
+            if (_currentDdl != null)
+            {
+                _isRunning = true;
+            }else if (_timer >= 5.0f)
+            {
+                _currentDdl = dynamicDifficultyData[0];
+                _currentSpeed = _currentDdl.baseSpeed;
+                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
+                _isRunning = true;
+            }
             if (_timer >= _currentSpawnInterval && _isRunning)
             {
                 SpawnWall();
                 _timer = 0.0f;
             }
         }
-        
         private void SpawnWall()
         {
             var side = Random.Range(-1, 2);
@@ -94,7 +101,6 @@ namespace Shoulder_Stretch
             wall.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
             wall.SetActive(true);
         }
-
         private void UpdateSpeed()
         {
             if (_currentSpeed + increaseSpeed > maximumIncrease)
