@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using Util;
 
 public class GameManager : MonoBehaviour
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
     public delegate void IncreaseScore();
     public static IncreaseScore IncreaseScoreEvent;
 
+
+    public delegate void DdlSet();
+    public static DdlSet DdlSetEvent;
     #endregion
     public void OnRestart()
     {
@@ -71,6 +75,7 @@ public class GameManager : MonoBehaviour
     public void set_player_data(string data)
     {
         Player = JsonConvert.DeserializeObject<PlayerData>(data);
+        DdlSetEvent.Invoke();
     }
     public void update_client_data(string data)
     {
@@ -92,33 +97,41 @@ public class GameManager : MonoBehaviour
     }
 
     #region backend
+    [System.Serializable]
     private class HighScoreData
     {
-        public int HighScore;
+        public int game_type;
+        public int score;
     }
     public void PostHighScore()
     {
         StartCoroutine(PostHighScoreCoroutine());
     }
-    //@TODO
-    //change the apiUrl when amirreza provides it
-    //
+
     private IEnumerator PostHighScoreCoroutine()
     {
+        var gameType = 1;
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "Overhead_Stretch" : gameType = 2; break;
+            default: gameType = 1; break;
+        }
+        
         var highScoreData = new HighScoreData()
         {
-            HighScore = _playerScoreValue
+            game_type = gameType,
+            score = _playerScoreValue
         };
 
         var jsonData = JsonConvert.SerializeObject(highScoreData);
 
-        using (var request = new UnityWebRequest("apiUrl", "POST"))
+        using (var request = new UnityWebRequest("http://127.0.0.1:8000/api/scores/submit", "POST"))
         {
             var jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(jsonToSend);
 
             request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("Authorization", $"Bearer {Player.Token}");
+            request.SetRequestHeader("Authorization", $"Bearer {Player.token}");
 
             request.downloadHandler = new DownloadHandlerBuffer();
 
