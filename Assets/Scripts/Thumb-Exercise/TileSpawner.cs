@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DDL;
 using UnityEngine;
 using Util;
 
@@ -8,30 +9,31 @@ namespace Thumb_Exercise
     public class TileSpawner : MonoBehaviour
     {
         public List<GameObject> spawnPosition;
-        public float baseSpeed;
-        public float spawnInterval;
-        public float increaseTime;
-        public float increaseSpeed;
-        public float maximumIncrease;
         public ObjectPool pool;
-        
+        public List<DdlThumbData> dynamicDifficultyData;
+
         private float _timer;
         private bool _isRunning = true;
         private float _currentSpawnInterval;
+        private float _baseSpeed;
         private float _currentSpeed;
+        
+        
+        private const float SpawnInterval = 2.0f;
+
         private void Start()
         {
-            _currentSpeed = baseSpeed;
-            _currentSpawnInterval = spawnInterval;
+            
+            // _currentSpeed = baseSpeed;
+            _currentSpawnInterval = SpawnInterval;
             GameManager.GameOverEvent += OnGameOver;
             GameManager.RestartEvent += OnRestart;
-            InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
         private void OnRestart()
         {
             _isRunning = true;
-            _currentSpawnInterval = spawnInterval;
-            _currentSpeed = baseSpeed;
+            _currentSpawnInterval = SpawnInterval;
+            // _currentSpeed = baseSpeed;
             _timer = 0.0f;
         }
         private void OnGameOver()
@@ -58,23 +60,6 @@ namespace Thumb_Exercise
             obj.SetActive(true);
             obj.GetComponent<Tile>().SetSpeed(_currentSpeed);
         }
-        private void UpdateSpeed()
-        {
-            if (_currentSpeed + increaseSpeed > maximumIncrease)
-            {
-                CancelInvoke(nameof(UpdateSpeed));
-                return;
-            }
-            _currentSpeed += increaseSpeed;
-            _currentSpawnInterval -= 0.1f;
-            var active = pool.GetActiveObjects();
-            foreach (var g in active)
-            {
-                // if (g.activeInHierarchy)
-                //     g.GetComponent<Tile>().SetSpeed(_currentSpeed);
-            }
-        }
-
 
     }
 }

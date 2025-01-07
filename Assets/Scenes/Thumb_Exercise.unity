@@ -156,11 +156,8 @@ MonoBehaviour:
   - {fileID: 250931437}
   - {fileID: 1448458220}
   - {fileID: 1160332897}
-  baseSpeed: 0.1
+  baseSpeed: 5
   spawnInterval: 2
-  increaseTime: 20
-  increaseSpeed: 5
-  maximumIncrease: 20
   pool: {fileID: 1418190592}
 --- !u!4 &49228256
 Transform:
