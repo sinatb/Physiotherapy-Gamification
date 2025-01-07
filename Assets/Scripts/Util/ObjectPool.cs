@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Util
@@ -29,7 +28,6 @@ namespace Util
             }
             return null;
         }
-
         public List<GameObject> GetActiveObjects()
         {
             var result = new List<GameObject>();
