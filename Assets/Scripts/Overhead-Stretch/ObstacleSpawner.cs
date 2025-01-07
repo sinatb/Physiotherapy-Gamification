@@ -25,20 +25,10 @@ namespace Overhead_Stretch
         {
             _currentSpeed = baseSpeed;
             _currentSpawnInterval = spawnInterval;
-            if (GameManager.Instance.Player != null)
-            {
-                foreach (var d in dynamicDifficultyData)
-                {
-                    if (d.InRange(GameManager.Instance.Player.HighScore))
-                    {
-                        _currentSpeed = d.baseSpeed;
-                        _currentSpawnInterval = d.baseSpawnInterval;
-                    }
-                }
-            }
             
             GameManager.GameOverEvent += OnGameOver;
             GameManager.RestartEvent += OnRestart;
+            GameManager.DdlSetEvent += OnDdlSet;
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
         private void Update()
@@ -105,6 +95,28 @@ namespace Overhead_Stretch
         {
             _isRunning = false;
             pool.DeactivateObjects();
+        }
+
+        private void OnDdlSet()
+        {
+            if (GameManager.Instance.Player != null)
+            {
+                foreach (var d in dynamicDifficultyData)
+                {
+                    if (d.InRange(GameManager.Instance.Player.high_score))
+                    {
+                        _currentSpeed = d.baseSpeed;
+                        _currentSpawnInterval = d.baseSpawnInterval;
+                        baseSpeed = d.baseSpeed;
+                        spawnInterval = d.baseSpawnInterval;
+                    }
+                }
+            }
+            var active = pool.GetActiveObjects();
+            foreach (var g in active)
+            {
+                g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+            }
         }
     }
 }

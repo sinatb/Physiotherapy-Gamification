@@ -51,9 +51,9 @@ namespace Shoulder_Stretch
         private void Awake()
         {
             GameManager.UpdateDataEvent += UpdateData;
-            GameManager.GameOverEvent += GameOverFunction;
-            GameManager.RestartEvent += RestartFunction;
-            GameManager.IncreaseScoreEvent += IncreaseScoreFunction;
+            GameManager.GameOverEvent += OnGameOver;
+            GameManager.RestartEvent += OnRestart;
+            GameManager.IncreaseScoreEvent += OnIncreaseScore;
             _audioSource = GetComponent<AudioSource>();
             _mRigidBody = GetComponent<Rigidbody>();
             _positions = new Dictionary<Side, Vector3>()
@@ -64,18 +64,18 @@ namespace Shoulder_Stretch
             };
         }
 
-        private void IncreaseScoreFunction()
+        private void OnIncreaseScore()
         {
             StartCoroutine(FadeTimer());
             _audioSource.PlayOneShot(pointSound);
         }
 
-        private void RestartFunction()
+        private void OnRestart()
         {
             _isRunning = true;
         }
 
-        private void GameOverFunction()
+        private void OnGameOver()
         {
             _isRunning = false;
         }
