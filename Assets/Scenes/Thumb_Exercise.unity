@@ -151,16 +151,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86e608b49d5574468f59a5bbab96506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPosition:
-  - {fileID: 1432640525}
-  - {fileID: 250931437}
-  - {fileID: 1448458220}
-  - {fileID: 1160332897}
   pool: {fileID: 1418190592}
   dynamicDifficultyData:
   - {fileID: 11400000, guid: 98df451d7dcbbe74b8464ecb80b4a63d, type: 2}
   - {fileID: 11400000, guid: 45713be2921afe444893914b1d3c6152, type: 2}
   - {fileID: 11400000, guid: b466ed3b330515d4a878459c6857f42a, type: 2}
+  spawnPosition:
+  - {fileID: 1432640525}
+  - {fileID: 250931437}
+  - {fileID: 1448458220}
+  - {fileID: 1160332897}
 --- !u!4 &49228256
 Transform:
   m_ObjectHideFlags: 0
@@ -995,6 +995,59 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1745643915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1745643917}
+  - component: {fileID: 1745643916}
+  m_Layer: 0
+  m_Name: Despawner
+  m_TagString: Despawner
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1745643916
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745643915}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 50, y: 0.1, z: 50}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1745643917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745643915}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -28, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1800637635
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,3 +1463,4 @@ SceneRoots:
   - {fileID: 809332433}
   - {fileID: 49228256}
   - {fileID: 1418190593}
+  - {fileID: 1745643917}
