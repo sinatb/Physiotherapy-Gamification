@@ -22,32 +22,7 @@ namespace Overhead_Stretch
         [SerializeField] private AudioClip       gameOverSound;
         private AudioSource                      _audioSource;
         private int                              _soundPlayCounter;
-
         
-        private IEnumerator FadeTimer()
-        {
-            var num = feedbackDuration/0.01;
-            var posLeft = scoreFeedbackTextLeft.transform.localPosition;
-            var posRight = scoreFeedbackTextRight.transform.localPosition;
-            for (var i = 0; i < num; i++)
-            {
-                scoreFeedbackTextLeft.transform.localPosition += (Vector3.up * 0.01f);
-                scoreFeedbackTextRight.transform.localPosition += (Vector3.up * 0.01f);
-
-                scoreFeedbackTextLeft.SetText("+1");
-                scoreFeedbackTextRight.SetText("+1");
-                
-                scoreFeedbackTextLeft.alpha = 1.0f - i * 0.01f;
-                scoreFeedbackTextRight.alpha = 1.0f - i * 0.01f;
-                
-                yield return new WaitForSeconds(0.01f);
-            }
-            scoreFeedbackTextLeft.transform.localPosition = posLeft;
-            scoreFeedbackTextRight.transform.localPosition = posRight;
-            
-            scoreFeedbackTextLeft.alpha = 0.0f;
-            scoreFeedbackTextRight.alpha = 0.0f;
-        }
         private void OnGameOver()
         {
             _audioSource.PlayOneShot(gameOverSound);
@@ -56,7 +31,10 @@ namespace Overhead_Stretch
         private void OnIncreaseScore()
         {
             _soundPlayCounter++;
-            StartCoroutine(FadeTimer());
+            
+            StartCoroutine(TextFeedback.FadeTimer(feedbackDuration,scoreFeedbackTextLeft));
+            StartCoroutine(TextFeedback.FadeTimer(feedbackDuration,scoreFeedbackTextRight));
+            
             if (_soundPlayCounter == 2)
             {
                 _audioSource.PlayOneShot(pointSound);
