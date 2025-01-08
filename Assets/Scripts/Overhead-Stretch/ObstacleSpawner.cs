@@ -5,53 +5,18 @@ using Util;
 
 namespace Overhead_Stretch
 {
-    public class ObstacleSpawner : MonoBehaviour
+    public class ObstacleSpawner : BaseSpawner
     {
         public List<GameObject>  spawnPosition;
         public float             increaseSpeed;
         public float             maximumIncrease;
         public float             increaseTime;
-        public List<DdlData>     dynamicDifficultyData;
-        public ObjectPool        pool;
-        
-        private float            _timer;
-        private DdlData          _currentDdl;
-        private bool             _isRunning = false;
-        private float            _currentSpeed;
-        private float            _currentSpawnInterval;
         
         private void Start()
         {
-            if (_currentDdl != null)
-            {
-                _currentSpeed = _currentDdl.baseSpeed;
-                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-            }
-            GameManager.GameOverEvent += OnGameOver;
-            GameManager.RestartEvent += OnRestart;
-            GameManager.DdlSetEvent += OnDdlSet;
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
-        private void Update()
-        {
-            _timer += Time.deltaTime;
-            if (_currentDdl != null)
-            {
-                _isRunning = true;
-            }else if (_timer >= 5.0f)
-            {
-                _currentDdl = dynamicDifficultyData[0];
-                _currentSpeed = _currentDdl.baseSpeed;
-                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-                _isRunning = true;
-            }
-            if (_timer >= _currentSpawnInterval && _isRunning)
-            {
-                SpawnObstacle();    
-                _timer = 0.0f;
-            }
-        }
-        private void SpawnObstacle()
+        protected override void Spawn()
         {
             var side = Random.Range(0, 2);
             
@@ -66,7 +31,7 @@ namespace Overhead_Stretch
             var spawnPosition1 = spawnPosition[side].transform.position;
             spawnPosition1.x += horizontalCoef;
             w1.transform.position = spawnPosition1;
-            w1.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+            w1.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
 
             w1.SetActive(true);
             
@@ -74,57 +39,39 @@ namespace Overhead_Stretch
             var spawnPosition2 = spawnPosition[side].transform.position;
             spawnPosition2.x -= horizontalCoef;
             w2.transform.position = spawnPosition2;
-            w2.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+            w2.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
             
             w2.SetActive(true);
             
         }
         private void UpdateSpeed()
         {
-            if (_currentSpeed + increaseSpeed > maximumIncrease)
+            if (CurrentSpeed + increaseSpeed > maximumIncrease)
             {
                 CancelInvoke(nameof(UpdateSpeed));
                 return;
             }
-            _currentSpeed += increaseSpeed;
-            _currentSpawnInterval -= 0.1f;
+            CurrentSpeed += increaseSpeed;
+            CurrentSpawnInterval -= 0.1f;
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {
-                g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
+                g.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
             }
         }
-        private void OnRestart()
+        protected override void Setup()
         {
-            _currentSpeed = _currentDdl.baseSpeed;
-            _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-            _isRunning = true;
-            _timer = 0.0f;
+            CurrentSpeed = CurrentDdl.baseSpeed;
+            CurrentSpawnInterval = ((DdlData)CurrentDdl).baseSpawnInterval;
         }
-        private void OnGameOver()
+        protected override void SetupDdl(DdlBase d)
         {
-            _isRunning = false;
-            pool.DeactivateObjects();
+            CurrentSpeed = d.baseSpeed;
+            CurrentSpawnInterval = ((DdlData)d).baseSpawnInterval;
         }
-        private void OnDdlSet()
+        protected override void SetSpeed(GameObject g)
         {
-            if (GameManager.Instance.Player != null)
-            {
-                foreach (var d in dynamicDifficultyData)
-                {
-                    if (d.InRange(GameManager.Instance.Player.high_score))
-                    {
-                        _currentSpeed = d.baseSpeed;
-                        _currentSpawnInterval = d.baseSpawnInterval;
-                        _currentDdl = d;
-                    }
-                }
-            }
-            var active = pool.GetActiveObjects();
-            foreach (var g in active)
-            {
-                g.GetComponent<ObstacleBehaviour>().SetSpeed(_currentSpeed);
-            }
+            g.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
         }
     }
 }

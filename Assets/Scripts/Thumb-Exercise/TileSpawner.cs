@@ -5,85 +5,35 @@ using Util;
 
 namespace Thumb_Exercise
 {
-    public class TileSpawner : MonoBehaviour
+    public class TileSpawner : BaseSpawner
     {
         public List<GameObject>   spawnPosition;
-        public ObjectPool         pool;
-        public List<DdlThumbData> dynamicDifficultyData;
-        public float              baseSpeed;
-        
-        private float        _timer;
-        private DdlThumbData _currentDdl;
-        private bool         _isRunning;
-        private float        _baseSpeed;
-        private float        _currentSpeed;
-        
-        private const float  SpawnInterval = 2.0f;
-
         private void Start()
         {
-            if (_currentDdl != null)
-            {
-                _currentSpeed = baseSpeed;
-            }
-            GameManager.GameOverEvent += OnGameOver;
-            GameManager.RestartEvent += OnRestart;
-            GameManager.DdlSetEvent += OnDdlSet;
+            CurrentSpawnInterval = 2.0f;
         }
-        private void OnRestart()
+        protected override void Setup()
         {
-            _isRunning = true;
-            _currentSpeed = _currentDdl.speed;
-            _timer = 0.0f;
+            CurrentSpeed = CurrentDdl.baseSpeed;
         }
-        private void OnDdlSet()
+
+        protected override void SetupDdl(DdlBase d)
         {
-            if (GameManager.Instance.Player != null)
-            {
-                foreach (var d in dynamicDifficultyData)
-                {
-                    if (d.InRange(GameManager.Instance.Player.high_score))
-                    {
-                        _currentSpeed = d.speed;
-                    }
-                }
-            }
-            var active = pool.GetActiveObjects();
-            foreach (var g in active)
-            {
-                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-            }
+            CurrentSpeed = d.baseSpeed;
         }
-        private void OnGameOver()
+
+        protected override void SetSpeed(GameObject g)
         {
-            _isRunning = false;
-            pool.DeactivateObjects();
+            throw new System.NotImplementedException();
         }
-        private void Update()
-        {
-            _timer += Time.deltaTime;
-            if (_currentDdl != null)
-            {
-                _isRunning = true;
-            }else if (_timer >= 5.0f)
-            {
-                _currentDdl = dynamicDifficultyData[0];
-                _currentSpeed = _currentDdl.speed;
-                _isRunning = true;
-            }
-            if (_timer >= SpawnInterval && _isRunning)
-            {
-                SpawnTile();
-                _timer = 0.0f;
-            }
-        }
-        private void SpawnTile()
+        
+        protected override void Spawn()
         {
             var randomIndex = Random.Range(0, spawnPosition.Count);
             var obj = pool.GetPooledObject();
             obj.transform.position = spawnPosition[randomIndex].transform.position;
             obj.SetActive(true);
-            obj.GetComponent<Tile>().SetSpeed(_currentSpeed);
+            obj.GetComponent<Tile>().SetSpeed(CurrentSpeed);
         }
     }
 }

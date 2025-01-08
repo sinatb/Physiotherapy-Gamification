@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   min: 0
   max: 20
-  speed: 3
+  baseSpeed: 3
   size: 6

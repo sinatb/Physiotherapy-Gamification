@@ -6,86 +6,39 @@ using Util;
 
 namespace Shoulder_Stretch
 {
-    public class WallSpawner : MonoBehaviour
+    public class WallSpawner : BaseSpawner
     {
         public float         wallOffset;
         public float         increaseTime;
         public float         increaseSpeed;
         public int           maximumIncrease;
-        public List<DdlData> dynamicDifficultyData;
-        public ObjectPool    pool;
         
-        private float             _timer;
-        private DdlData           _currentDdl;
-        private float             _currentSpeed;
-        private float             _currentSpawnInterval;
+
         private CircularList<int> _history;
-        private bool              _isRunning = false;
+
         private void Start()
         {
-            if (_currentDdl != null)
-            {
-                _currentSpeed = _currentDdl.baseSpeed;
-                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-            }
             _history = new CircularList<int>(3);
-            GameManager.GameOverEvent += OnGameOver;
-            GameManager.RestartEvent += OnRestart;
-            GameManager.DdlSetEvent += OnDdlSet;
-
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
-        private void OnRestart()
+        protected override void Setup()
         {
-            _isRunning = true;
-            _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-            _currentSpeed = _currentDdl.baseSpeed;
-            _timer = 0.0f;
+            CurrentSpeed = CurrentDdl.baseSpeed;
+            CurrentSpawnInterval = ((DdlData)CurrentDdl).baseSpawnInterval;
         }
-        private void OnGameOver()
+
+        protected override void SetupDdl(DdlBase d)
         {
-            _isRunning = false;
-            pool.DeactivateObjects();
+            CurrentSpeed = d.baseSpeed;
+            CurrentSpawnInterval = ((DdlData)d).baseSpawnInterval;
         }
-        private void OnDdlSet()
+
+        protected override void SetSpeed(GameObject g)
         {
-            if (GameManager.Instance.Player != null)
-            {
-                foreach (var d in dynamicDifficultyData)
-                {
-                    if (d.InRange(GameManager.Instance.Player.high_score))
-                    {
-                        _currentSpeed = d.baseSpeed;
-                        _currentSpawnInterval = d.baseSpawnInterval;
-                    }
-                }
-            }
-            var active = pool.GetActiveObjects();
-            foreach (var g in active)
-            {
-                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
-            }
+            g.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
         }
-        private void Update()
-        {
-            _timer += Time.deltaTime;
-            if (_currentDdl != null)
-            {
-                _isRunning = true;
-            }else if (_timer >= 5.0f)
-            {
-                _currentDdl = dynamicDifficultyData[0];
-                _currentSpeed = _currentDdl.baseSpeed;
-                _currentSpawnInterval = _currentDdl.baseSpawnInterval;
-                _isRunning = true;
-            }
-            if (_timer >= _currentSpawnInterval && _isRunning)
-            {
-                SpawnWall();
-                _timer = 0.0f;
-            }
-        }
-        private void SpawnWall()
+
+        protected override void Spawn()
         {
             var side = Random.Range(-1, 2);
             while (_history.CountEquals(side) > 1)
@@ -98,22 +51,22 @@ namespace Shoulder_Stretch
                                             transform.position.z);
             GameObject wall = pool.GetPooledObject();
             wall.transform.position = spawnpos;
-            wall.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+            wall.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
             wall.SetActive(true);
         }
         private void UpdateSpeed()
         {
-            if (_currentSpeed + increaseSpeed > maximumIncrease)
+            if (CurrentSpeed + increaseSpeed > maximumIncrease)
             {
                 CancelInvoke(nameof(UpdateSpeed));
                 return;
             }
-            _currentSpeed += increaseSpeed;
-            _currentSpawnInterval -= 0.1f;
+            CurrentSpeed += increaseSpeed;
+            CurrentSpawnInterval -= 0.1f;
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {
-                g.GetComponent<WallBehaviour>().SetSpeed(_currentSpeed);
+                g.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
             }
         }
         
