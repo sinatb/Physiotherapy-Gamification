@@ -21,11 +21,6 @@ namespace Thumb_Exercise
         {
             CurrentSpeed = d.baseSpeed;
         }
-
-        protected override void SetSpeed(GameObject g)
-        {
-            throw new System.NotImplementedException();
-        }
         
         protected override void Spawn()
         {
@@ -33,7 +28,8 @@ namespace Thumb_Exercise
             var obj = pool.GetPooledObject();
             obj.transform.position = spawnPosition[randomIndex].transform.position;
             obj.SetActive(true);
-            obj.GetComponent<Tile>().SetSpeed(CurrentSpeed);
+            obj.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
+            obj.GetComponent<Tile>().SetYScale(((DdlThumbData)CurrentDdl).size);
         }
     }
 }

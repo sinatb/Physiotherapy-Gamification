@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DDL;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -32,12 +31,7 @@ namespace Shoulder_Stretch
             CurrentSpeed = d.baseSpeed;
             CurrentSpawnInterval = ((DdlData)d).baseSpawnInterval;
         }
-
-        protected override void SetSpeed(GameObject g)
-        {
-            g.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
-        }
-
+        
         protected override void Spawn()
         {
             var side = Random.Range(-1, 2);
@@ -51,7 +45,7 @@ namespace Shoulder_Stretch
                                             transform.position.z);
             GameObject wall = pool.GetPooledObject();
             wall.transform.position = spawnpos;
-            wall.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
+            wall.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             wall.SetActive(true);
         }
         private void UpdateSpeed()
@@ -66,7 +60,7 @@ namespace Shoulder_Stretch
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {
-                g.GetComponent<WallBehaviour>().SetSpeed(CurrentSpeed);
+                g.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             }
         }
         

@@ -19,11 +19,22 @@ namespace Util
         private bool               _isGameOver = false;
         private bool               _isRunning = false;
 
-
+        /// <summary>
+        /// Spawning logic implementation. called at every spawnInterval
+        /// </summary>
         protected abstract void Spawn();
+        /// <summary>
+        /// Common setup done on start and restart of each game
+        /// </summary>
         protected abstract void Setup();
+        /// <summary>
+        /// Sets the class fields with respect to dynamic difficulty settings
+        /// </summary>
+        /// <param name="d">Dynamic difficulty Object</param>
         protected abstract void SetupDdl(DdlBase d);
-        protected abstract void SetSpeed(GameObject g);
+        /// <summary>
+        /// When DDL is set up from the server this event function updates obstacle speeds and also sets ddl data
+        /// </summary>
         private void OnDdlSet()
         {
             if (GameManager.Instance.Player != null)

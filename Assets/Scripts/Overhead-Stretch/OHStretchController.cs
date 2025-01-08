@@ -27,7 +27,6 @@ namespace Overhead_Stretch
         {
             _audioSource.PlayOneShot(gameOverSound);
         }
-
         private void OnIncreaseScore()
         {
             _soundPlayCounter++;

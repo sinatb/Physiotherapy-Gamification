@@ -1,28 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Util;
 
 namespace Thumb_Exercise
 {
-    public class Tile : MonoBehaviour
+    public class Tile : BaseObstacle
     {
-        private Rigidbody _mRigidbody;
-        private float     _speed = 10.0f;
-
-        private void Start()
+        private void OnCollisionEnter(Collision other)
         {
-            _mRigidbody = GetComponent<Rigidbody>();
+            if (other.gameObject.CompareTag("Despawner"))
+            {
+                gameObject.SetActive(false);
+            }
         }
-
-        private void FixedUpdate()
+        public void SetYScale(float yScale)
         {
-            _mRigidbody.MovePosition(transform.position +
-                                     Vector3.down * (_speed * Time.fixedDeltaTime));
-        }
-        
-        public void SetSpeed(float speed)
-        {
-            _speed = speed;
+            transform.localScale = new Vector3(transform.localScale.x,
+                yScale,
+                transform.localScale.z);
         }
     }
 }

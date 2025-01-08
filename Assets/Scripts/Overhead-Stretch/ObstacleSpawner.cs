@@ -31,7 +31,7 @@ namespace Overhead_Stretch
             var spawnPosition1 = spawnPosition[side].transform.position;
             spawnPosition1.x += horizontalCoef;
             w1.transform.position = spawnPosition1;
-            w1.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
+            w1.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
 
             w1.SetActive(true);
             
@@ -56,7 +56,7 @@ namespace Overhead_Stretch
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {
-                g.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
+                g.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             }
         }
         protected override void Setup()
@@ -68,10 +68,6 @@ namespace Overhead_Stretch
         {
             CurrentSpeed = d.baseSpeed;
             CurrentSpawnInterval = ((DdlData)d).baseSpawnInterval;
-        }
-        protected override void SetSpeed(GameObject g)
-        {
-            g.GetComponent<ObstacleBehaviour>().SetSpeed(CurrentSpeed);
         }
     }
 }
