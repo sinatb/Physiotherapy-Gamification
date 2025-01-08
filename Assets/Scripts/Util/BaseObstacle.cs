@@ -4,8 +4,9 @@ namespace Util
 {
     public abstract class BaseObstacle : MonoBehaviour
     {
+        protected Vector3 Direction = Vector3.back;
         private Rigidbody _mRigidbody;
-        private float _speed;
+        private float     _speed;
         private void Start()
         {
             _mRigidbody = GetComponent<Rigidbody>();
@@ -13,7 +14,7 @@ namespace Util
         private void FixedUpdate()
         {
             _mRigidbody.MovePosition(transform.position +
-                                     Vector3.back * (_speed * Time.fixedDeltaTime));
+                                     Direction * (_speed * Time.fixedDeltaTime));
         }
         public void SetSpeed(float speed)
         {
