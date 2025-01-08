@@ -52,7 +52,7 @@ namespace Overhead_Stretch
                 return;
             }
             CurrentSpeed += increaseSpeed;
-            CurrentSpawnInterval -= 0.1f;
+            CurrentSpawnInterval -= 0.2f;
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {

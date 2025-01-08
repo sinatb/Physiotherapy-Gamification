@@ -1,23 +1,10 @@
 using UnityEngine;
+using Util;
 
 namespace Overhead_Stretch
 {
-    public class ObstacleBehaviour : MonoBehaviour
+    public class ObstacleBehaviour : BaseObstacle
     {
-        private Rigidbody _mRigidbody;
-        private float     _speed = 10.0f;
-
-        private void Start()
-        {
-            _mRigidbody = GetComponent<Rigidbody>();
-        }
-
-        private void FixedUpdate()
-        {
-            _mRigidbody.MovePosition(transform.position +
-                                     Vector3.back * (_speed * Time.fixedDeltaTime));
-        }
-
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.CompareTag("Player"))
@@ -29,11 +16,6 @@ namespace Overhead_Stretch
             {
                 GameManager.GameOverEvent.Invoke();
             }
-        }
-
-        public void SetSpeed(float speed)
-        {
-            _speed = speed;
         }
     }
 }

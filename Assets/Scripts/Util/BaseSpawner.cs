@@ -39,7 +39,7 @@ namespace Util
             var active = pool.GetActiveObjects();
             foreach (var g in active)
             {
-                SetSpeed(g);
+               g.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             }
             _isDdlLoaded = true;
             if (!_isGameOver && !_isRunning)

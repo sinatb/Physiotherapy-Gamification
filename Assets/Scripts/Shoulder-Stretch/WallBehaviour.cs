@@ -1,31 +1,17 @@
 using UnityEngine;
+using Util;
 
-public class WallBehaviour : MonoBehaviour
+namespace Shoulder_Stretch
 {
-    private Rigidbody _mRigidbody;
-    private float _speed;    
-    private void Start()
+    public class WallBehaviour : BaseObstacle
     {
-        _mRigidbody = GetComponent<Rigidbody>();
-    }
-
-    private void FixedUpdate()
-    {
-        _mRigidbody.MovePosition(transform.position +
-                                 Vector3.back * (_speed * Time.fixedDeltaTime));
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Despawner"))
+        private void OnCollisionEnter(Collision other)
         {
-            gameObject.SetActive(false);
-            GameManager.IncreaseScoreEvent.Invoke();
+            if (other.gameObject.CompareTag("Despawner"))
+            {
+                gameObject.SetActive(false);
+                GameManager.IncreaseScoreEvent.Invoke();
+            }
         }
-    }
-
-    public void SetSpeed(float speed)
-    {
-        _speed = speed;
     }
 }
