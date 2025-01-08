@@ -14,10 +14,11 @@ namespace Util
         protected float            CurrentSpawnInterval;
         protected DdlBase          CurrentDdl;
         
-        private bool               _isRunning = false;
         private float              _timer;
         private bool               _isDdlLoaded = false;
-  
+        private bool               _isGameOver = false;
+        private bool               _isRunning = false;
+
 
         protected abstract void Spawn();
         protected abstract void Setup();
@@ -41,17 +42,19 @@ namespace Util
                 SetSpeed(g);
             }
             _isDdlLoaded = true;
+            if (!_isGameOver && !_isRunning)
+                _isRunning = true;
         }
         private void Update()
         {
             _timer += Time.deltaTime;
-            if (_timer >= 5.0f && !_isDdlLoaded)
+            if (!_isGameOver && _timer >= 5.0f && !_isDdlLoaded)
             {
                 CurrentDdl = dynamicDifficultyData[0];
                 SetupDdl(CurrentDdl);
                 _isRunning = true;
             }
-            if (_timer >= CurrentSpawnInterval && _isRunning)
+            if (_isRunning && _timer >= CurrentSpawnInterval)
             {
                 Spawn();
                 _timer = 0.0f;
@@ -60,12 +63,14 @@ namespace Util
         private void OnGameOver()
         {
             _isRunning = false;
+            _isGameOver = true;
             pool.DeactivateObjects();
         }
         private void OnRestart()
         {
             Setup();
             _isRunning = true;
+            _isGameOver = false;
             _timer = 0.0f;
         }
         private void Awake()
