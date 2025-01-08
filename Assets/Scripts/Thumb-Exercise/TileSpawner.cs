@@ -8,6 +8,8 @@ namespace Thumb_Exercise
     public class TileSpawner : BaseSpawner
     {
         public List<GameObject>   spawnPosition;
+
+        private int _previous = -1;
         private void Start()
         {
             CurrentSpawnInterval = 2.0f;
@@ -25,6 +27,11 @@ namespace Thumb_Exercise
         protected override void Spawn()
         {
             var randomIndex = Random.Range(0, spawnPosition.Count);
+            while (randomIndex == _previous)
+            {
+                randomIndex = Random.Range(0, spawnPosition.Count);
+            }
+            _previous = randomIndex;
             var obj = pool.GetPooledObject();
             obj.transform.position = spawnPosition[randomIndex].transform.position;
             obj.SetActive(true);
