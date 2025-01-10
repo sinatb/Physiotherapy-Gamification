@@ -1,17 +1,26 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Thumb_Exercise
 {
+    enum Position
+    {
+        NoPos,
+        Pos0,
+        Pos1,
+        Pos2,
+        Pos3,
+    }
     public class ThumbController : MonoBehaviour
     {
         public List<GameObject> inputPoints;
         private AudioSource     _audioSource;
+        private Position        _currentPosition;
 
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
+            GameManager.UpdateDataEvent += UpdateData;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -35,24 +44,46 @@ namespace Thumb_Exercise
                  inputPoints[i].SetActive(i == index && index != -1);
             }
         }
-        void Update()
+
+        private void UpdateData(PointDataList pdl)
+        {
+            if ((pdl.points[4].Vect - pdl.points[8].Vect).magnitude < 0.1f)
+            {
+                _currentPosition = Position.Pos0;
+            }else if ((pdl.points[4].Vect - pdl.points[12].Vect).magnitude < 0.1f)
+            {
+                _currentPosition = Position.Pos1;
+            }else if ((pdl.points[4].Vect - pdl.points[16].Vect).magnitude < 0.1f)
+            {
+                _currentPosition = Position.Pos2;
+            }else if ((pdl.points[4].Vect - pdl.points[20].Vect).magnitude < 0.1f)
+            {
+                _currentPosition = Position.Pos3;
+            }
+            else
+            {
+                _currentPosition = Position.NoPos;
+            }
+        }
+        private void Update()
         {
             if (Input.GetKey(KeyCode.Q))
             {
-                ActivatePoint(0);
+                _currentPosition = Position.Pos0;
             }else if (Input.GetKey(KeyCode.W))
             {
-                ActivatePoint(1);
+                _currentPosition = Position.Pos1;
             }else if (Input.GetKey(KeyCode.E))
             {
-                ActivatePoint(2);
+                _currentPosition = Position.Pos2;
             }else if (Input.GetKey(KeyCode.R))
             {
-                ActivatePoint(3);
+                _currentPosition = Position.Pos3;
             }else
             {
-                ActivatePoint(-1);
+                _currentPosition = Position.NoPos;
             }
+            ActivatePoint((int)_currentPosition-1);
         }
     }
 }
