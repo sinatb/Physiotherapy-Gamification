@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,18 @@ namespace Thumb_Exercise
     public class ThumbController : MonoBehaviour
     {
         public List<GameObject> inputPoints;
-        
+
+        private void OnTriggerEnter(Collider other)
+        {
+            var t = other.GetComponent<Tile>(); 
+            if (t?.isPlaying == false)
+            {
+                if (!t.isInvalidated)
+                    StartCoroutine(t.ChangeColor(Color.red, 1.5f));
+                t.isInvalidated = true;
+            }
+        }
+
         private void ActivatePoint(int index)
         {
             for (var i = 0; i < inputPoints.Count; i++)
