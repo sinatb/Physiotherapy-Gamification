@@ -161,6 +161,8 @@ MonoBehaviour:
   - {fileID: 250931437}
   - {fileID: 1448458220}
   - {fileID: 1160332897}
+  music: {fileID: 8300000, guid: 83a3138d18225f949b72f9b32b58d629, type: 3}
+  segmentLength: 2
 --- !u!4 &49228256
 Transform:
   m_ObjectHideFlags: 0

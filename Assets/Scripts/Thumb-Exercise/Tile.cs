@@ -7,11 +7,14 @@ namespace Thumb_Exercise
 {
     public class Tile : BaseObstacle
     {
-        public bool isPlaying;
-        public bool isInvalidated;
-        private MaterialPropertyBlock _propertyBlock;
-        private MeshRenderer _meshRenderer;
+        
+        public bool                   isPlaying;
+        public bool                   isInvalidated;
+        public AudioClip              Audio { get; set; }
 
+        private AudioSource           _source;
+        private MaterialPropertyBlock _propertyBlock;
+        private MeshRenderer          _meshRenderer;
         public IEnumerator ChangeColor(Color c, float duration)
         {
             var step = duration/100;
@@ -27,6 +30,7 @@ namespace Thumb_Exercise
         {
             _propertyBlock = new MaterialPropertyBlock();
             _meshRenderer = GetComponent<MeshRenderer>();
+            _source = GetComponent<AudioSource>();
             Direction = Vector3.down;
         }
 
@@ -43,8 +47,12 @@ namespace Thumb_Exercise
             if (other.CompareTag("Player") && !isInvalidated)
             {
                 if (!isPlaying)
+                {
                     StartCoroutine(ChangeColor(Color.green, 1.5f));
+                    _source.PlayOneShot(Audio);
+                }
                 isPlaying = true;
+                
             }
         }
 
