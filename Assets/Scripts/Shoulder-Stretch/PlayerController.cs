@@ -32,22 +32,7 @@ namespace Shoulder_Stretch
         private Dictionary<Side, Vector3>        _positions;
         private bool                             _isRunning = true;
         private AudioSource                      _audioSource;
-
-        private IEnumerator FadeTimer()
-        {
-            var num = feedbackDuration/0.01;
-            var pos = scoreFeedbackText.transform.localPosition;
-            for (var i = 0; i < num; i++)
-            {
-                scoreFeedbackText.transform.localPosition += (Vector3.up * 0.01f);
-                scoreFeedbackText.SetText("+1");
-                scoreFeedbackText.alpha = 1.0f - i * 0.01f;
-                yield return new WaitForSeconds(0.01f);
-            }
-            scoreFeedbackText.transform.localPosition = pos;
-            scoreFeedbackText.alpha = 0.0f;
-        }
-
+        
         private void Awake()
         {
             GameManager.UpdateDataEvent += UpdateData;
@@ -66,20 +51,17 @@ namespace Shoulder_Stretch
 
         private void OnIncreaseScore()
         {
-            StartCoroutine(FadeTimer());
+            StartCoroutine(TextFeedback.FadeTimer(feedbackDuration,scoreFeedbackText));
             _audioSource.PlayOneShot(pointSound);
         }
-
         private void OnRestart()
         {
             _isRunning = true;
         }
-
         private void OnGameOver()
         {
             _isRunning = false;
         }
-
         private void FixedUpdate()
         {
             if (_isRunning)
@@ -94,7 +76,6 @@ namespace Shoulder_Stretch
                     _mRigidBody.MovePosition(_positions[_mSide]);
             }
         }
-
         private void Update()
         {
             if (_isRunning)
@@ -114,21 +95,18 @@ namespace Shoulder_Stretch
                 }
             }
         }
-
         private void MoveRight()
         {
             if (_mSide == Side.Right)
                 return;
             _mSide++;
         }
-
         private void MoveLeft()
         {
             if (_mSide == Side.Left)
                 return;
             _mSide--;
         }
-
         private void UpdateData(PointDataList pdl)
         {
             if (_timer < changeTimer)
@@ -153,7 +131,6 @@ namespace Shoulder_Stretch
             else if (rightHand.x < pdl.points[12].x)
                 _nextMove = 'r';
         }
-
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.CompareTag("Wall"))

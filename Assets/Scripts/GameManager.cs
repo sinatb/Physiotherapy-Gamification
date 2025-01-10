@@ -72,6 +72,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    #region callback
     public void set_player_data(string data)
     {
         Player = JsonConvert.DeserializeObject<PlayerData>(data);
@@ -95,7 +97,8 @@ public class GameManager : MonoBehaviour
             serverDebugData.text = pdl.points[0].ToString();
         UpdateDataEvent.Invoke(pdl);
     }
-
+    #endregion
+    
     #region backend
     [System.Serializable]
     private class HighScoreData
@@ -103,7 +106,7 @@ public class GameManager : MonoBehaviour
         public int game_type;
         public int score;
     }
-    public void PostHighScore()
+    private void PostHighScore()
     {
         StartCoroutine(PostHighScoreCoroutine());
     }
@@ -114,6 +117,7 @@ public class GameManager : MonoBehaviour
         switch (SceneManager.GetActiveScene().name)
         {
             case "Overhead_Stretch" : gameType = 2; break;
+            case "Thumb_Exercise" : gameType = 3; break;
             default: gameType = 1; break;
         }
         

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Despawner
   - Wall
+  - Invalidator
   layers:
   - Default
   - TransparentFX
