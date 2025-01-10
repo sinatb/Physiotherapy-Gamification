@@ -10,6 +10,7 @@ namespace Thumb_Exercise
         
         public bool                   isPlaying;
         public bool                   isInvalidated;
+        public bool                   isLast;
         public AudioClip              Audio { get; set; }
 
         private AudioSource           _source;
@@ -60,6 +61,8 @@ namespace Thumb_Exercise
         {
             if (other.gameObject.CompareTag("Despawner"))
             {
+                if (isLast)
+                    GameManager.GameOverEvent?.Invoke();
                 gameObject.SetActive(false);
             }
         }
@@ -74,6 +77,7 @@ namespace Thumb_Exercise
         {
             isPlaying = false;
             isInvalidated = false;
+            isLast = false;
             _propertyBlock.SetColor("_BaseColor", Color.white);
             _meshRenderer.SetPropertyBlock(_propertyBlock);
         }

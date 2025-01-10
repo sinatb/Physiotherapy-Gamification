@@ -22,6 +22,7 @@ namespace Thumb_Exercise
         protected override void Setup()
         {
             CurrentSpeed = CurrentDdl.baseSpeed;
+            _count = 0;
         }
 
         protected override void SetupDdl(DdlBase d)
@@ -70,6 +71,8 @@ namespace Thumb_Exercise
         }
         protected override void Spawn()
         {
+            if (_count >= _musicSegments.Count)
+                return;
             var randomIndex = Random.Range(0, spawnPosition.Count);
             while (randomIndex == _previous)
             {
@@ -83,6 +86,9 @@ namespace Thumb_Exercise
             obj.GetComponent<Tile>().SetYScale(((DdlThumbData)CurrentDdl).size);
             obj.GetComponent<Tile>().Audio = _musicSegments[_count];
             _count++;
+            if (_count == _musicSegments.Count)
+                obj.GetComponent<Tile>().isLast = true;
+
         }
     }
 }
