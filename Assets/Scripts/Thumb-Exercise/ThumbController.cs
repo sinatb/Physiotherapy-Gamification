@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,12 @@ namespace Thumb_Exercise
     public class ThumbController : MonoBehaviour
     {
         public List<GameObject> inputPoints;
+        private AudioSource     _audioSource;
+
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -13,7 +20,10 @@ namespace Thumb_Exercise
             if (t?.isPlaying == false)
             {
                 if (!t.isInvalidated)
+                {
+                    _audioSource.PlayOneShot(_audioSource.clip);
                     StartCoroutine(t.ChangeColor(Color.red, 1.5f));
+                }   
                 t.isInvalidated = true;
             }
         }
