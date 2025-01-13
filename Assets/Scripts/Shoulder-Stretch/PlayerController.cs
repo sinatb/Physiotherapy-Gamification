@@ -65,9 +65,9 @@ namespace Shoulder_Stretch
         }
         private void FixedUpdate()
         {
-            gameObject.transform.Rotate(Vector3.right, WallSpawner.Instance.Speed* 10 * Time.fixedDeltaTime);
             if (_isRunning)
             {
+                gameObject.transform.Rotate(Vector3.right, WallSpawner.Instance.Speed* 10 * Time.fixedDeltaTime);
                 if (Vector3.Distance(transform.position, _positions[_mSide]) == 0.0f)
                     return;
                 if (Vector3.Distance(transform.position, _positions[_mSide]) > 0.1f)
