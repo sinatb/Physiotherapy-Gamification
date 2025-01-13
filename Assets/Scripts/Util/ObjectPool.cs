@@ -5,7 +5,7 @@ namespace Util
 {
     public class ObjectPool:MonoBehaviour
     {
-        public GameObject prefab;
+        public List<GameObject> prefabs;
         public int poolSize;
         private List<GameObject> _pool = new List<GameObject>();
 
@@ -14,19 +14,22 @@ namespace Util
             GameObject tmp;
             for (var i = 0; i < poolSize; i++)
             {
-                tmp = Instantiate(prefab);
-                tmp.SetActive(false);
-                _pool.Add(tmp);
+                foreach (var p in prefabs)
+                {
+                    tmp = Instantiate(p);
+                    tmp.SetActive(false);
+                    _pool.Add(tmp);   
+                }
             }
         }
         public GameObject GetPooledObject()
         {
-            foreach (var g in _pool)
+            var g = _pool[Random.Range(0, _pool.Count)];
+            while (g.activeInHierarchy)
             {
-                if (!g.activeInHierarchy)
-                    return g;
+                g = _pool[Random.Range(0, _pool.Count)];
             }
-            return null;
+            return g;
         }
         public List<GameObject> GetActiveObjects()
         {
