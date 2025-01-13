@@ -8,10 +8,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Shoulder_Stretch.unity
     guid: 6c94ebb8dc8b6744cab53fc1924cdf07
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Overhead_Stretch.unity
     guid: db627159d3542334bbfb653d6447f90d
+  - enabled: 0
+    path: Assets/Scenes/Thumb_Exercise.unity
+    guid: 7c7cdd3b7d9b1c24a9be1ddba74dea30
   m_configObjects: {}
