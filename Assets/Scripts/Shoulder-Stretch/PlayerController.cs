@@ -16,8 +16,6 @@ namespace Shoulder_Stretch
             Middle,
             Right
         }
-
-        public float                             rotationSpeed;
         
         [SerializeField] private TextMeshProUGUI scoreFeedbackText;
         [SerializeField] private float           moveOffset;
@@ -34,6 +32,7 @@ namespace Shoulder_Stretch
         private Dictionary<Side, Vector3>        _positions;
         private bool                             _isRunning = true;
         private AudioSource                      _audioSource;
+
         
         private void Awake()
         {
@@ -66,7 +65,7 @@ namespace Shoulder_Stretch
         }
         private void FixedUpdate()
         {
-            gameObject.transform.Rotate(Vector3.right, rotationSpeed * Time.fixedDeltaTime);
+            gameObject.transform.Rotate(Vector3.right, WallSpawner.Instance.Speed* 10 * Time.fixedDeltaTime);
             if (_isRunning)
             {
                 if (Vector3.Distance(transform.position, _positions[_mSide]) == 0.0f)

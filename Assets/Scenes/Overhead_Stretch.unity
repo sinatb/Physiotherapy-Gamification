@@ -576,7 +576,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f08051a9bf4f79874bc7b656c1e7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4738308961700681345, guid: 7e493f85886d7704aa63c961ab910ea3, type: 3}
+  prefabs:
+  - {fileID: 4738308961700681345, guid: 7e493f85886d7704aa63c961ab910ea3, type: 3}
   poolSize: 10
 --- !u!4 &740538964
 Transform:

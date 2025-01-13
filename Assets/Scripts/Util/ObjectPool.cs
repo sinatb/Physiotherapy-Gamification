@@ -16,7 +16,7 @@ namespace Util
             {
                 foreach (var p in prefabs)
                 {
-                    tmp = Instantiate(p);
+                    tmp = Instantiate(p, transform);
                     tmp.SetActive(false);
                     _pool.Add(tmp);   
                 }

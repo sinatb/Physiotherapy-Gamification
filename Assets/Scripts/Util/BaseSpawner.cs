@@ -8,13 +8,14 @@ namespace Util
     {
         public ObjectPool          pool;
         public List<DdlBase>       dynamicDifficultyData;
-
+        public bool                IsRunning => _isRunning;
+        public float               Speed => CurrentSpeed;
 
         protected float            CurrentSpeed;
         protected float            CurrentSpawnInterval;
         protected DdlBase          CurrentDdl;
-        protected bool             IsRunning = false;
 
+        private bool               _isRunning = false;
         private float              _timer;
         private bool               _isDdlLoaded = false;
         private bool               _isGameOver = false;
@@ -53,8 +54,8 @@ namespace Util
                g.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             }
             _isDdlLoaded = true;
-            if (!_isGameOver && !IsRunning)
-                IsRunning = true;
+            if (!_isGameOver && !_isRunning)
+                _isRunning = true;
         }
         private void Update()
         {
@@ -63,9 +64,9 @@ namespace Util
             {
                 CurrentDdl = dynamicDifficultyData[0];
                 SetupDdl(CurrentDdl);
-                IsRunning = true;
+                _isRunning = true;
             }
-            if (IsRunning && _timer >= CurrentSpawnInterval)
+            if (_isRunning && _timer >= CurrentSpawnInterval)
             {
                 Spawn();
                 _timer = 0.0f;
@@ -73,14 +74,14 @@ namespace Util
         }
         private void OnGameOver()
         {
-            IsRunning = false;
+            _isRunning = false;
             _isGameOver = true;
             pool.DeactivateObjects();
         }
         private void OnRestart()
         {
             Setup();
-            IsRunning = true;
+            _isRunning = true;
             _isGameOver = false;
             _timer = 0.0f;
         }
