@@ -13,11 +13,11 @@ namespace Util
         protected float            CurrentSpeed;
         protected float            CurrentSpawnInterval;
         protected DdlBase          CurrentDdl;
-        
+        protected bool             IsRunning = false;
+
         private float              _timer;
         private bool               _isDdlLoaded = false;
         private bool               _isGameOver = false;
-        private bool               _isRunning = false;
 
         /// <summary>
         /// Spawning logic implementation. called at every spawnInterval
@@ -53,8 +53,8 @@ namespace Util
                g.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
             }
             _isDdlLoaded = true;
-            if (!_isGameOver && !_isRunning)
-                _isRunning = true;
+            if (!_isGameOver && !IsRunning)
+                IsRunning = true;
         }
         private void Update()
         {
@@ -63,9 +63,9 @@ namespace Util
             {
                 CurrentDdl = dynamicDifficultyData[0];
                 SetupDdl(CurrentDdl);
-                _isRunning = true;
+                IsRunning = true;
             }
-            if (_isRunning && _timer >= CurrentSpawnInterval)
+            if (IsRunning && _timer >= CurrentSpawnInterval)
             {
                 Spawn();
                 _timer = 0.0f;
@@ -73,14 +73,14 @@ namespace Util
         }
         private void OnGameOver()
         {
-            _isRunning = false;
+            IsRunning = false;
             _isGameOver = true;
             pool.DeactivateObjects();
         }
         private void OnRestart()
         {
             Setup();
-            _isRunning = true;
+            IsRunning = true;
             _isGameOver = false;
             _timer = 0.0f;
         }

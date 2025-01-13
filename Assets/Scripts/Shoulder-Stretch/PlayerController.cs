@@ -17,6 +17,8 @@ namespace Shoulder_Stretch
             Right
         }
 
+        public float                             rotationSpeed;
+        
         [SerializeField] private TextMeshProUGUI scoreFeedbackText;
         [SerializeField] private float           moveOffset;
         [SerializeField] private float           speed;
@@ -64,6 +66,7 @@ namespace Shoulder_Stretch
         }
         private void FixedUpdate()
         {
+            gameObject.transform.Rotate(Vector3.right, rotationSpeed * Time.fixedDeltaTime);
             if (_isRunning)
             {
                 if (Vector3.Distance(transform.position, _positions[_mSide]) == 0.0f)
