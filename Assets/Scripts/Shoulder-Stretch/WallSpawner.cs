@@ -1,4 +1,5 @@
 using DDL;
+using Graphics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Util;
@@ -23,12 +24,14 @@ namespace Shoulder_Stretch
         protected override void Setup()
         {
             CurrentSpeed = CurrentDdl.baseSpeed;
+            GraphicsManager.Instance.roadSpeed = CurrentSpeed/30;
             CurrentSpawnInterval = ((DdlData)CurrentDdl).baseSpawnInterval;
         }
 
         protected override void SetupDdl(DdlBase d)
         {
             CurrentSpeed = d.baseSpeed;
+            GraphicsManager.Instance.roadSpeed = CurrentSpeed/30;
             CurrentSpawnInterval = ((DdlData)d).baseSpawnInterval;
         }
         
@@ -56,6 +59,7 @@ namespace Shoulder_Stretch
                 return;
             }
             CurrentSpeed += increaseSpeed;
+            GraphicsManager.Instance.roadSpeed = CurrentSpeed/30;
             CurrentSpawnInterval -= 0.2f;
             var active = pool.GetActiveObjects();
             foreach (var g in active)
