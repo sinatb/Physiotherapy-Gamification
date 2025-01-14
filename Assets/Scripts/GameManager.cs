@@ -12,14 +12,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     
     public PlayerData                        Player;
-    public TextMeshProUGUI                   serverDebugData;
-    public TextMeshProUGUI                   playerScore;
     public GameType                          gameType;
-    
-    [SerializeField] private GameObject      gameOverPanel;
-    [SerializeField] private GameObject      gameSelectPanel;
-    [SerializeField] private TextMeshProUGUI highScoreText;
-    
+    public bool                              canSpawn;
+    public int                               PlayerScore => _playerScoreValue;
     private int                              _playerScoreValue;
 
     #region events
@@ -36,34 +31,28 @@ public class GameManager : MonoBehaviour
     public delegate void IncreaseScore();
     public static IncreaseScore IncreaseScoreEvent;
 
-
+    public delegate void GameStart();
+    public static GameStart GameStartEvent;
+    
     public delegate void DdlSet();
     public static DdlSet DdlSetEvent;
     #endregion
     public void OnRestart()
     {
         RestartEvent?.Invoke();
-        gameOverPanel.SetActive(false);
         _playerScoreValue = 0;
-        playerScore.text = "Score : " + _playerScoreValue;
     }
     private void OnGameOver()
     {
-        gameOverPanel.SetActive(true);
         if (Player != null)
             PostHighScore();
-        highScoreText.text = $"Score: {_playerScoreValue}";
     }
     private void OnIncreaseScore()
     {
         _playerScoreValue++;
-        if (playerScore != null)
-            playerScore.text = "Score : " + _playerScoreValue;
     }
     private void Awake()
     {
-        if (playerScore != null)
-            playerScore.text = "Score : 0";
         GameOverEvent += OnGameOver;
         IncreaseScoreEvent += OnIncreaseScore;
         if (Instance == null)
@@ -95,8 +84,6 @@ public class GameManager : MonoBehaviour
         var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        if (serverDebugData != null)
-            serverDebugData.text = pdl.points[0].ToString();
         UpdateDataEvent.Invoke(pdl);
     }
     #endregion

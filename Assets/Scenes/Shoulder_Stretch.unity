@@ -771,7 +771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &265064813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4555,6 +4555,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 3181f15579d1b0c46872c9980226268b, type: 3}
   m_PrefabInstance: {fileID: 1340211967}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1350565120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1350565122}
+  - component: {fileID: 1350565121}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1350565121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350565120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ace975763a7dd449a9bb820bdc9fae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverPanel: {fileID: 938951440}
+  gameStartPanel: {fileID: 1421358503}
+  timeSelect: {fileID: 265064812}
+  highScoreText: {fileID: 325223906}
+  playerScore: {fileID: 2065380720}
+--- !u!4 &1350565122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350565120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1357674774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 3667b1c4d7f532647b9156782c0c80f0, type: 3}
@@ -6753,12 +6802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98af7f3b3334b4b4fa39a7aaab29ae8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverDebugData: {fileID: 0}
-  playerScore: {fileID: 2065380720}
   gameType: 0
-  gameOverPanel: {fileID: 938951440}
-  gameSelectPanel: {fileID: 0}
-  highScoreText: {fileID: 325223906}
 --- !u!4 &2129925534
 Transform:
   m_ObjectHideFlags: 0
@@ -6859,3 +6903,4 @@ SceneRoots:
   - {fileID: 702556235}
   - {fileID: 520305173}
   - {fileID: 2077197788}
+  - {fileID: 1350565122}
