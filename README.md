@@ -22,7 +22,7 @@ The Games are built for `webgl` and are loaded into the frontend of the cubic pr
 
 This game is designed for the shoulder stretch exercise. In it the player controls a ball that has to avoid obstacles in a city.
 
-![alt text]({CFB80309-5F9E-417D-B9C5-3A1707B04BA5}.png)
+![alt text](./ReadMe/{CFB80309-5F9E-417D-B9C5-3A1707B04BA5}.png)
 
 By moving his hand to the right, The ball moves to right and vice versa.
 
@@ -30,18 +30,18 @@ By moving his hand to the right, The ball moves to right and vice versa.
 
 This game is designed for the overhead stretch exercise. In it the player can control 2 orbs of power by moving his hands. The goal is to consume as much asteroids as possible.
 
-![alt text]({56159A40-99D7-4233-8A28-F46388BEF62D}.png)
+![alt text](./ReadMe/{56159A40-99D7-4233-8A28-F46388BEF62D}.png)
 
 ### Thumb Exercise
 
 This game is designed for the Thumb exercise. In it the player has to move his thumb to any one of his fingers at the right time to trigger the piano tile.
 
-![alt text]({E1BA4739-0B97-4B85-A7B7-65881891CA1B}.png)
+![alt text](./ReadMe/{E1BA4739-0B97-4B85-A7B7-65881891CA1B}.png)
 
 ## Images Of The Games
 
-![alt text]({C187E554-898B-43C2-AA3C-6EE0B6320D3C}.png)
+![alt text](./ReadMe/{C187E554-898B-43C2-AA3C-6EE0B6320D3C}.png)
 
-![alt text]({318A58D0-92AE-48B0-B087-3A0116138A0D}.png)
+![alt text](./ReadMe/{318A58D0-92AE-48B0-B087-3A0116138A0D}.png)
 
-![alt text]({6EAFCF76-4CA9-4163-9E0D-374C82149721}.png)
+![alt text](./ReadMe/{6EAFCF76-4CA9-4163-9E0D-374C82149721}.png)
