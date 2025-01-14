@@ -8,15 +8,20 @@ namespace Thumb_Exercise
     public class TileSpawner : BaseSpawner
     {
         public List<GameObject>   spawnPosition;
-        public AudioClip          music;
         public float              segmentLength;
         
         private List<AudioClip>   _musicSegments = new List<AudioClip>();
         private int               _previous = -1;
         private int               _count;
+        private AudioClip         _music;
         private void Start()
         {
             CurrentSpawnInterval = 2.0f;
+        }
+
+        public void SetMusic(AudioClip music)
+        {
+            _music = music;
             SplitAudio();
         }
         protected override void Setup()
@@ -31,36 +36,36 @@ namespace Thumb_Exercise
         }
         private void SplitAudio()
         {
-            if (music == null)
+            if (_music == null)
             {
                 Debug.LogError("Original clip not assigned!");
                 return;
             }
 
-            var audioData = new float[music.samples * music.channels];
-            music.GetData(audioData, 0);
+            var audioData = new float[_music.samples * _music.channels];
+            _music.GetData(audioData, 0);
 
-            var segmentSamples = Mathf.FloorToInt(segmentLength * music.frequency);
+            var segmentSamples = Mathf.FloorToInt(segmentLength * _music.frequency);
 
-            var totalSegments = Mathf.CeilToInt((float)music.samples / segmentSamples);
+            var totalSegments = Mathf.CeilToInt((float)_music.samples / segmentSamples);
 
             for (var i = 0; i < totalSegments; i++)
             {
                 var startSample = i * segmentSamples;
-                var currentSegmentSamples = Mathf.Min(segmentSamples, music.samples - startSample);
+                var currentSegmentSamples = Mathf.Min(segmentSamples, _music.samples - startSample);
 
-                var segmentData = new float[currentSegmentSamples * music.channels];
+                var segmentData = new float[currentSegmentSamples * _music.channels];
 
-                for (var j = 0; j < currentSegmentSamples * music.channels; j++)
+                for (var j = 0; j < currentSegmentSamples * _music.channels; j++)
                 {
-                    segmentData[j] = audioData[startSample * music.channels + j];
+                    segmentData[j] = audioData[startSample * _music.channels + j];
                 }
 
                 var segmentClip = AudioClip.Create(
                     $"Segment_{i + 1}",
                     currentSegmentSamples,
-                    music.channels,
-                    music.frequency,
+                    _music.channels,
+                    _music.frequency,
                     false
                 );
 
