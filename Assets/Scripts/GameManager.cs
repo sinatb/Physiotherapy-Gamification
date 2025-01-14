@@ -14,8 +14,10 @@ public class GameManager : MonoBehaviour
     public PlayerData                        Player;
     public TextMeshProUGUI                   serverDebugData;
     public TextMeshProUGUI                   playerScore;
+    public GameType                          gameType;
     
     [SerializeField] private GameObject      gameOverPanel;
+    [SerializeField] private GameObject      gameSelectPanel;
     [SerializeField] private TextMeshProUGUI highScoreText;
     
     private int                              _playerScoreValue;
