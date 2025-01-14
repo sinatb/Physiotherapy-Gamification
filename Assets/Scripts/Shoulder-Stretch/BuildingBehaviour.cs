@@ -8,7 +8,7 @@ namespace Shoulder_Stretch
 
         private void Update()
         {
-            if (WallSpawner.Instance.IsRunning)
+            if (WallSpawner.Instance.IsRunning && GameManager.Instance.canSpawn)
             {
                 transform.position += Vector3.back * ((speed + WallSpawner.Instance.Speed / 20) * Time.deltaTime);
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     
     public PlayerData                        Player;
     public GameType                          gameType;
+    public float                             time;
     public bool                              canSpawn;
     public int                               PlayerScore { get; private set; }
 
@@ -29,9 +31,6 @@ public class GameManager : MonoBehaviour
 
     public delegate void IncreaseScore();
     public static IncreaseScore IncreaseScoreEvent;
-
-    public delegate void GameStart();
-    public static GameStart GameStartEvent;
     
     public delegate void DdlSet();
     public static DdlSet DdlSetEvent;
@@ -62,6 +61,11 @@ public class GameManager : MonoBehaviour
         else{
             Destroy(gameObject);
         }
+    }
+
+    private void Update()
+    {
+        time -= Time.deltaTime;
     }
 
     #region callback

@@ -16,7 +16,7 @@ namespace Shoulder_Stretch
 
         private void SpawnBuilding()
         {
-            if (!WallSpawner.Instance.IsRunning)
+            if (!WallSpawner.Instance.IsRunning || !GameManager.Instance.canSpawn)
             {
                 return;
             }
