@@ -59,6 +59,8 @@ namespace Util
         }
         private void Update()
         {
+            if (!GameManager.Instance.canSpawn)
+                return;
             _timer += Time.deltaTime;
             if (!_isGameOver && _timer >= 5.0f && !_isDdlLoaded)
             {
