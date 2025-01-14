@@ -14,8 +14,7 @@ public class GameManager : MonoBehaviour
     public PlayerData                        Player;
     public GameType                          gameType;
     public bool                              canSpawn;
-    public int                               PlayerScore => _playerScoreValue;
-    private int                              _playerScoreValue;
+    public int                               PlayerScore { get; private set; }
 
     #region events
     
@@ -40,16 +39,17 @@ public class GameManager : MonoBehaviour
     public void OnRestart()
     {
         RestartEvent?.Invoke();
-        _playerScoreValue = 0;
+        PlayerScore = 0;
     }
     private void OnGameOver()
     {
         if (Player != null)
             PostHighScore();
+        canSpawn = false;
     }
     private void OnIncreaseScore()
     {
-        _playerScoreValue++;
+        PlayerScore++;
     }
     private void Awake()
     {
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         var highScoreData = new HighScoreData()
         {
             game_type = gameType,
-            score = _playerScoreValue
+            score = PlayerScore
         };
 
         var jsonData = JsonConvert.SerializeObject(highScoreData);
