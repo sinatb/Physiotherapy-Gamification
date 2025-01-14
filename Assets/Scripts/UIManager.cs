@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI playerScore;
+    [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TMP_Dropdown    timeDropdown;
     
 
@@ -21,7 +22,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.canSpawn = true;
         gameStartPanel.SetActive(false);
         playerScore.text = "Score : 0";
-
+        timeText.text = "";
     }
     // Set the game type to timed and show the time selection panel
     public void SetTimedMode()
@@ -37,6 +38,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.canSpawn = true;
         timeSelect.SetActive(false);
         playerScore.text = "Score : 0";
+        timeText.text = $"{Math.Floor(GameManager.Instance.time / 60)} : {Math.Floor(GameManager.Instance.time % 60)}";
     }
     
     
@@ -55,6 +57,7 @@ public class UIManager : MonoBehaviour
             gameOverText.text = "You Won";
         GameManager.Instance.gameType = GameType.NotSet;
         gameOverPanel.SetActive(true);
+        timeText.text = "";
     }
 
     private void OnRestart()
@@ -67,5 +70,12 @@ public class UIManager : MonoBehaviour
     private void OnIncreaseScore()
     {
         playerScore.text = "Score : " + GameManager.Instance.PlayerScore;
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance.gameType != GameType.Timed || !GameManager.Instance.canSpawn)
+            return;
+        timeText.text = $"{Math.Floor(GameManager.Instance.time / 60)} : {Math.Floor(GameManager.Instance.time % 60)}";
     }
 }
