@@ -11,6 +11,10 @@ namespace Graphics
 
         private void Update()
         {
+            if (!GameManager.Instance.canSpawn)
+            {
+                return;
+            }
             RenderSettings.skybox.SetFloat("_Rotation",Time.time*skyBoxRotationSpeed);
             if (WallSpawner.Instance.IsRunning)
             {

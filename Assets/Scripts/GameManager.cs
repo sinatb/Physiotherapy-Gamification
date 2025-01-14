@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Newtonsoft.Json;
@@ -12,13 +13,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     
     public PlayerData                        Player;
-    public TextMeshProUGUI                   serverDebugData;
-    public TextMeshProUGUI                   playerScore;
-    
-    [SerializeField] private GameObject      gameOverPanel;
-    [SerializeField] private TextMeshProUGUI highScoreText;
-    
-    private int                              _playerScoreValue;
+    public GameType                          gameType;
+    public double                            time;
+    public bool                              canSpawn;
+    public int                               PlayerScore { get; private set; }
 
     #region events
     
@@ -33,35 +31,27 @@ public class GameManager : MonoBehaviour
 
     public delegate void IncreaseScore();
     public static IncreaseScore IncreaseScoreEvent;
-
-
+    
     public delegate void DdlSet();
     public static DdlSet DdlSetEvent;
     #endregion
     public void OnRestart()
     {
         RestartEvent?.Invoke();
-        gameOverPanel.SetActive(false);
-        _playerScoreValue = 0;
-        playerScore.text = "Score : " + _playerScoreValue;
+        PlayerScore = 0;
     }
     private void OnGameOver()
     {
-        gameOverPanel.SetActive(true);
         if (Player != null)
             PostHighScore();
-        highScoreText.text = $"Score: {_playerScoreValue}";
+        canSpawn = false;
     }
     private void OnIncreaseScore()
     {
-        _playerScoreValue++;
-        if (playerScore != null)
-            playerScore.text = "Score : " + _playerScoreValue;
+        PlayerScore++;
     }
     private void Awake()
     {
-        if (playerScore != null)
-            playerScore.text = "Score : 0";
         GameOverEvent += OnGameOver;
         IncreaseScoreEvent += OnIncreaseScore;
         if (Instance == null)
@@ -70,6 +60,17 @@ public class GameManager : MonoBehaviour
         }
         else{
             Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (gameType != GameType.Timed)
+            return;
+        time -= Time.deltaTime;
+        if (time <= 0 && canSpawn)
+        {
+            GameOverEvent?.Invoke();
         }
     }
 
@@ -93,8 +94,6 @@ public class GameManager : MonoBehaviour
         var points = JsonUtil.DeserializeToList<PointData>(cleanData);
         var pdl = new PointDataList();
         pdl.points = points.ToList();
-        if (serverDebugData != null)
-            serverDebugData.text = pdl.points[0].ToString();
         UpdateDataEvent.Invoke(pdl);
     }
     #endregion
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviour
         var highScoreData = new HighScoreData()
         {
             game_type = gameType,
-            score = _playerScoreValue
+            score = PlayerScore
         };
 
         var jsonData = JsonConvert.SerializeObject(highScoreData);
