@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     
     public PlayerData                        Player;
     public GameType                          gameType;
-    public float                             time;
+    public double                            time;
     public bool                              canSpawn;
     public int                               PlayerScore { get; private set; }
 
@@ -65,7 +65,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gameType != GameType.Timed)
+            return;
         time -= Time.deltaTime;
+        if (time <= 0 && canSpawn)
+        {
+            GameOverEvent?.Invoke();
+        }
     }
 
     #region callback

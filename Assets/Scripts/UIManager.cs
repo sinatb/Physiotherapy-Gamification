@@ -8,9 +8,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject      gameOverPanel;
     [SerializeField] private GameObject      gameStartPanel;
     [SerializeField] private GameObject      timeSelect;
+    [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI playerScore;
     [SerializeField] private TMP_Dropdown    timeDropdown;
+    
 
     // Set the game type to endless and start the game
     public void SetEndlessMode()
@@ -31,7 +33,7 @@ public class UIManager : MonoBehaviour
     // Start the game with the selected time
     public void StartGame()
     {
-        GameManager.Instance.time = Convert.ToInt32(timeDropdown.options[timeDropdown.value].text[0]) * 60;
+        GameManager.Instance.time = Char.GetNumericValue(timeDropdown.options[timeDropdown.value].text[0]) * 60;
         GameManager.Instance.canSpawn = true;
         timeSelect.SetActive(false);
         playerScore.text = "Score : 0";
@@ -48,6 +50,10 @@ public class UIManager : MonoBehaviour
     private void OnGameOver()
     {
         highScoreText.text = $"Score: {GameManager.Instance.PlayerScore}";
+        gameOverText.text = "Game Over";
+        if (GameManager.Instance.gameType == GameType.Timed && GameManager.Instance.time <= 0)
+            gameOverText.text = "You Won";
+        GameManager.Instance.gameType = GameType.NotSet;
         gameOverPanel.SetActive(true);
     }
 

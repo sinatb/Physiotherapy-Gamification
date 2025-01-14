@@ -4599,6 +4599,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 938951440}
   gameStartPanel: {fileID: 1421358503}
   timeSelect: {fileID: 265064812}
+  gameOverText: {fileID: 877655917}
   highScoreText: {fileID: 325223906}
   playerScore: {fileID: 2065380720}
   timeDropdown: {fileID: 237292518}
