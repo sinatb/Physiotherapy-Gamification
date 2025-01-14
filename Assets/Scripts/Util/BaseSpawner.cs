@@ -8,16 +8,17 @@ namespace Util
     {
         public ObjectPool          pool;
         public List<DdlBase>       dynamicDifficultyData;
-
+        public bool                IsRunning => _isRunning;
+        public float               Speed => CurrentSpeed;
 
         protected float            CurrentSpeed;
         protected float            CurrentSpawnInterval;
         protected DdlBase          CurrentDdl;
-        
+
+        private bool               _isRunning = false;
         private float              _timer;
         private bool               _isDdlLoaded = false;
         private bool               _isGameOver = false;
-        private bool               _isRunning = false;
 
         /// <summary>
         /// Spawning logic implementation. called at every spawnInterval

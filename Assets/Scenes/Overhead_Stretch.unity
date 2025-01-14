@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 9e07b5f1ebeb2764ea80a163086f4ba7, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -469,6 +469,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1408194920}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &498740817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 498740819}
+  - component: {fileID: 498740820}
+  m_Layer: 0
+  m_Name: GraphicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &498740819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498740817}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &498740820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498740817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29933ba775c47059491e8222ef8a6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skyBoxRotationSpeed: 0.5
+  skyBoxes:
+  - {fileID: 2100000, guid: 0a98eaa61401f3c49a068e4fbd6c2e2a, type: 2}
+  - {fileID: 2100000, guid: 4fbf92cf634b10148b946a2378bfec52, type: 2}
+  - {fileID: 2100000, guid: 9e07b5f1ebeb2764ea80a163086f4ba7, type: 2}
+  - {fileID: 2100000, guid: bcd3417f7c4e30d40bdf0dc5002ae1fd, type: 2}
+  - {fileID: 2100000, guid: 583f0d117f7056948943f87366c0f77b, type: 2}
 --- !u!1 &656332640
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f08051a9bf4f79874bc7b656c1e7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4738308961700681345, guid: 7e493f85886d7704aa63c961ab910ea3, type: 3}
+  prefabs:
+  - {fileID: 151664, guid: fa49e460baf435b4780da7196c2ab473, type: 3}
+  - {fileID: 141316, guid: 84cc3cd234dfc9d4d9d2e92c0eb0af75, type: 3}
+  - {fileID: 130102, guid: 04d0bf4be9447154188d86f6e3b8dce9, type: 3}
   poolSize: 10
 --- !u!4 &740538964
 Transform:
@@ -688,8 +742,8 @@ Camera:
   m_GameObject: {fileID: 945402568}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1920,3 +1974,4 @@ SceneRoots:
   - {fileID: 1242136966}
   - {fileID: 740538964}
   - {fileID: 1082709947}
+  - {fileID: 498740819}

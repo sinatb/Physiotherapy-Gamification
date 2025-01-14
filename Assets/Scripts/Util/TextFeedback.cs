@@ -8,7 +8,7 @@ namespace Util
     {
         public static IEnumerator FadeTimer(float feedbackDuration, TextMeshProUGUI scoreFeedbackText)
         {
-            var num = feedbackDuration / 0.01;
+            var num = feedbackDuration / 0.02;
             var pos = scoreFeedbackText.transform.localPosition;
             for (var i = 0; i < num; i++)
             {

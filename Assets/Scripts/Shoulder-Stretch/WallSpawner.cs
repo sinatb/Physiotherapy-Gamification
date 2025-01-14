@@ -1,4 +1,5 @@
 using DDL;
+using Graphics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Util;
@@ -7,16 +8,25 @@ namespace Shoulder_Stretch
 {
     public class WallSpawner : BaseSpawner
     {
-        public float         wallOffset;
-        public float         increaseTime;
-        public float         increaseSpeed;
-        public int           maximumIncrease;
+        public static           WallSpawner Instance;
+        public float            wallOffset;
+        public float            increaseTime;
+        public float            increaseSpeed;
+        public int              maximumIncrease;
         
 
         private CircularList<int> _history;
-
+        
         private void Start()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(Instance);
+            }
             _history = new CircularList<int>(3);
             InvokeRepeating(nameof(UpdateSpeed),0.0f,increaseTime);
         }
@@ -41,7 +51,7 @@ namespace Shoulder_Stretch
             }
             _history.Add(side);
             var spawnpos = new Vector3(transform.position.x - side *wallOffset,
-                                            1.5f,
+                                            0,
                                             transform.position.z);
             GameObject wall = pool.GetPooledObject();
             wall.transform.position = spawnpos;
@@ -50,9 +60,8 @@ namespace Shoulder_Stretch
         }
         private void UpdateSpeed()
         {
-            if (CurrentSpeed + increaseSpeed > maximumIncrease)
+            if (CurrentSpeed + increaseSpeed > maximumIncrease || !IsRunning)
             {
-                CancelInvoke(nameof(UpdateSpeed));
                 return;
             }
             CurrentSpeed += increaseSpeed;
