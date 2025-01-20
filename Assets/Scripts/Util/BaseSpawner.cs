@@ -78,6 +78,13 @@ namespace Util
         {
             _isRunning = false;
             _isGameOver = true;
+            foreach (var d in dynamicDifficultyData)
+            {
+                if (!d.InRange(GameManager.Instance.PlayerScore)) 
+                    continue;
+                SetupDdl(d);
+                CurrentDdl = d;
+            }
             pool.DeactivateObjects();
         }
         private void OnRestart()

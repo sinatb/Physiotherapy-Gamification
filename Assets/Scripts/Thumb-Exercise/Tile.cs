@@ -63,6 +63,7 @@ namespace Thumb_Exercise
             {
                 if (isLast)
                     GameManager.GameOverEvent?.Invoke();
+                
                 gameObject.SetActive(false);
             }
         }
@@ -78,6 +79,7 @@ namespace Thumb_Exercise
             isPlaying = false;
             isInvalidated = false;
             isLast = false;
+            StopAllCoroutines();
             _propertyBlock.SetColor("_BaseColor", Color.white);
             _meshRenderer.SetPropertyBlock(_propertyBlock);
         }

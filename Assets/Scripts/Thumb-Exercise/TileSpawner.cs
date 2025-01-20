@@ -22,6 +22,7 @@ namespace Thumb_Exercise
 
         public void SetMusic(AudioClip music)
         {
+            _musicSegments.Clear();
             _music = music;
             StartCoroutine(SplitAudio());
         }

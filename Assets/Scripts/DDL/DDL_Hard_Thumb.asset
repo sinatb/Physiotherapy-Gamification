@@ -15,4 +15,4 @@ MonoBehaviour:
   min: 4001
   max: 10000
   baseSpeed: 5
-  size: 10
+  size: 9

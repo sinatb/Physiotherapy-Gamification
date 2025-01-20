@@ -47,16 +47,16 @@ namespace Thumb_Exercise
 
         private void UpdateData(PointDataList pdl)
         {
-            if ((pdl.points[4].Vect - pdl.points[8].Vect).magnitude < 0.1f)
+            if ((pdl.points[4].Vect - pdl.points[8].Vect).magnitude < 0.04f)
             {
                 _currentPosition = Position.Pos0;
-            }else if ((pdl.points[4].Vect - pdl.points[12].Vect).magnitude < 0.1f)
+            }else if ((pdl.points[4].Vect - pdl.points[12].Vect).magnitude < 0.04f)
             {
                 _currentPosition = Position.Pos1;
-            }else if ((pdl.points[4].Vect - pdl.points[16].Vect).magnitude < 0.1f)
+            }else if ((pdl.points[4].Vect - pdl.points[16].Vect).magnitude < 0.04f)
             {
                 _currentPosition = Position.Pos2;
-            }else if ((pdl.points[4].Vect - pdl.points[20].Vect).magnitude < 0.1f)
+            }else if ((pdl.points[4].Vect - pdl.points[20].Vect).magnitude < 0.04f)
             {
                 _currentPosition = Position.Pos3;
             }
@@ -64,6 +64,7 @@ namespace Thumb_Exercise
             {
                 _currentPosition = Position.NoPos;
             }
+            Debug.LogError(_currentPosition);
         }
         private void Update()
         {
@@ -79,9 +80,6 @@ namespace Thumb_Exercise
             }else if (Input.GetKey(KeyCode.R))
             {
                 _currentPosition = Position.Pos3;
-            }else
-            {
-                _currentPosition = Position.NoPos;
             }
             ActivatePoint((int)_currentPosition-1);
         }
