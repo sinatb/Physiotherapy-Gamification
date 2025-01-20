@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DDL;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Thumb_Exercise
         public void SetMusic(AudioClip music)
         {
             _music = music;
-            SplitAudio();
+            StartCoroutine(SplitAudio());
         }
         protected override void Setup()
         {
@@ -34,12 +35,18 @@ namespace Thumb_Exercise
         {
             CurrentSpeed = d.baseSpeed;
         }
-        private void SplitAudio()
+        private IEnumerator SplitAudio()
         {
             if (_music == null)
             {
                 Debug.LogError("Original clip not assigned!");
-                return;
+                yield break;
+            }
+
+            while (_music.loadState != AudioDataLoadState.Loaded)
+            {
+                Debug.LogError(_music.loadState);
+                yield return null; 
             }
 
             var audioData = new float[_music.samples * _music.channels];
