@@ -11,11 +11,13 @@ namespace Thumb_Exercise
         public bool                   isPlaying;
         public bool                   isInvalidated;
         public bool                   isLast;
+        public float                  scoreIncreaseInterval;
         public AudioClip              Audio { get; set; }
 
         private AudioSource           _source;
         private MaterialPropertyBlock _propertyBlock;
         private MeshRenderer          _meshRenderer;
+        private float                 _scoreIncreaseTimer;
         public IEnumerator ChangeColor(Color c, float duration)
         {
             var step = duration/100;
@@ -37,10 +39,15 @@ namespace Thumb_Exercise
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Player") && !isInvalidated)
+            if (other.CompareTag("Player") &&
+                !isInvalidated && 
+                _scoreIncreaseTimer >= scoreIncreaseInterval)
             {
                 GameManager.IncreaseScoreEvent?.Invoke();
+                _scoreIncreaseTimer = 0.0f;
             }
+
+            _scoreIncreaseTimer += Time.deltaTime;
         }
 
         private void OnTriggerEnter(Collider other)

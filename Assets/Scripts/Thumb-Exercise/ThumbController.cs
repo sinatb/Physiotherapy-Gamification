@@ -64,7 +64,6 @@ namespace Thumb_Exercise
             {
                 _currentPosition = Position.NoPos;
             }
-            Debug.LogError(_currentPosition);
         }
         private void Update()
         {
