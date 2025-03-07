@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,6 +32,7 @@ namespace Thumb_Exercise
                 if (!t.isInvalidated)
                 {
                     _audioSource.PlayOneShot(_audioSource.clip);
+                    StartCoroutine(t.FlashRed(0.5f,0.5f,0.1f));
                 }   
                 t.isInvalidated = true;
             }

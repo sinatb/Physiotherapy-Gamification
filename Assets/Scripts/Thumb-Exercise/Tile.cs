@@ -22,7 +22,20 @@ namespace Thumb_Exercise
         private bool                  _isTouched;
         private readonly int          _colorID = Shader.PropertyToID("_BaseColor");
         private GameObject            _player;
-        
+        public IEnumerator FlashRed(float wait,float duration, float flashSpeed)
+        {
+            var elapsedTime = 0f;
+            var toggle = false;
+            yield return new WaitForSeconds(wait);
+            while (elapsedTime < duration)
+            {
+                _propertyBlock.SetColor(_colorID,toggle ? Color.red : Color.white);
+                _meshRenderer.SetPropertyBlock(_propertyBlock);
+                toggle = !toggle;
+                yield return new WaitForSeconds(flashSpeed);
+                elapsedTime += flashSpeed;
+            }
+        }
         private IEnumerator ChangeColor(Color c, float duration)
         {
             var totalTime = 0.0f;
@@ -38,7 +51,6 @@ namespace Thumb_Exercise
                 yield return null;
             }
         }
-        
         private void Awake()
         {
             _propertyBlock = new MaterialPropertyBlock();
@@ -46,7 +58,6 @@ namespace Thumb_Exercise
             _source = GetComponent<AudioSource>();
             Direction = Vector3.down;
         }
-
         private void OnTriggerStay(Collider other)
         {
             if (isInvalidated || !other.CompareTag("Player")) return;
@@ -60,7 +71,6 @@ namespace Thumb_Exercise
             _isTouched = true;
             _scoreIncreaseTimer += Time.fixedDeltaTime;
         }
-
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player") || isInvalidated) return;
@@ -74,7 +84,6 @@ namespace Thumb_Exercise
             StartCoroutine(MonitorPlayer());
 
         }
-
         private void OnCollisionEnter(Collision other)
         {
             if (!other.gameObject.CompareTag("Despawner")) return;
@@ -100,7 +109,6 @@ namespace Thumb_Exercise
                 yield return null;
             }
         }
-
         private void HandlePlayerExit()
         {
             _isTouched = false;
@@ -110,7 +118,6 @@ namespace Thumb_Exercise
             StopCoroutine(_colorChangeCoroutine);
             _colorChangeCoroutine = null;
         }
-
         private void OnDisable()
         {
             isPlaying = false;
