@@ -123,7 +123,7 @@ MonoBehaviour:
   isPlaying: 0
   isInvalidated: 0
   isLast: 0
-  scoreIncreaseInterval: 1
+  scoreIncreaseInterval: 0.5
 --- !u!54 &431378076354348803
 Rigidbody:
   m_ObjectHideFlags: 0

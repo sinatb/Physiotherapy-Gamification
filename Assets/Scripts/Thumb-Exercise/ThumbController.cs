@@ -31,7 +31,6 @@ namespace Thumb_Exercise
                 if (!t.isInvalidated)
                 {
                     _audioSource.PlayOneShot(_audioSource.clip);
-                    StartCoroutine(t.ChangeColor(Color.red, 1.5f));
                 }   
                 t.isInvalidated = true;
             }
