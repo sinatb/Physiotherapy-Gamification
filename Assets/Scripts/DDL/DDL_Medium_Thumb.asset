@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 827b7a880e3e61848a6919adb31fcb95, type: 3}
   m_Name: DDL_Medium_Thumb
   m_EditorClassIdentifier: 
-  min: 2001
-  max: 4000
+  min: 201
+  max: 600
   baseSpeed: 4
   size: 8

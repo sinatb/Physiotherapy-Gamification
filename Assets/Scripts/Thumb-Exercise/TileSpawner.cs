@@ -15,6 +15,7 @@ namespace Thumb_Exercise
         private int               _previous = -1;
         private int               _count;
         private AudioClip         _music;
+        private GameObject        _previousTile;
         private void Start()
         {
             CurrentSpawnInterval = 2.0f;
@@ -53,33 +54,43 @@ namespace Thumb_Exercise
             var audioData = new float[_music.samples * _music.channels];
             _music.GetData(audioData, 0);
 
-            var segmentSamples = Mathf.FloorToInt(segmentLength * _music.frequency);
+            var totalDuration = _music.length; 
+            var currentTime = 0f; 
+            
+            _musicSegments.Clear();
 
-            var totalSegments = Mathf.CeilToInt((float)_music.samples / segmentSamples);
-
-            for (var i = 0; i < totalSegments; i++)
+            while (currentTime < totalDuration)
             {
-                var startSample = i * segmentSamples;
-                var currentSegmentSamples = Mathf.Min(segmentSamples, _music.samples - startSample);
+                float[] possibleDurations = { 1f, 2f, 3f };
+                var segmentLength = possibleDurations[Random.Range(0, possibleDurations.Length)];
 
-                var segmentData = new float[currentSegmentSamples * _music.channels];
+                if (currentTime + segmentLength > totalDuration)
+                {
+                    segmentLength = totalDuration - currentTime; 
+                }
 
-                for (var j = 0; j < currentSegmentSamples * _music.channels; j++)
+                var segmentSamples = Mathf.FloorToInt(segmentLength * _music.frequency);
+                var startSample = Mathf.FloorToInt(currentTime * _music.frequency);
+
+                var segmentData = new float[segmentSamples * _music.channels];
+
+                for (var j = 0; j < segmentSamples * _music.channels; j++)
                 {
                     segmentData[j] = audioData[startSample * _music.channels + j];
                 }
 
                 var segmentClip = AudioClip.Create(
-                    $"Segment_{i + 1}",
-                    currentSegmentSamples,
+                    $"Segment_{_musicSegments.Count + 1}",
+                    segmentSamples,
                     _music.channels,
                     _music.frequency,
                     false
                 );
 
                 segmentClip.SetData(segmentData, 0);
-
                 _musicSegments.Add(segmentClip);
+
+                currentTime += segmentLength; 
             }
         }
         protected override void Spawn()
@@ -93,15 +104,24 @@ namespace Thumb_Exercise
             }
             _previous = randomIndex;
             var obj = pool.GetPooledObject();
-            obj.transform.position = spawnPosition[randomIndex].transform.position;
-            obj.SetActive(true);
             obj.GetComponent<BaseObstacle>().SetSpeed(CurrentSpeed);
-            obj.GetComponent<Tile>().SetYScale(((DdlThumbData)CurrentDdl).size);
             obj.GetComponent<Tile>().Audio = _musicSegments[_count];
+            obj.GetComponent<Tile>().SetYScale(((DdlThumbData)CurrentDdl).size);
+            CurrentSpawnInterval = _musicSegments[_count].length;
+            var addition = 0.0f;
+            while (_previousTile != null && 
+                   _previousTile.GetComponent<Renderer>().bounds.Intersects
+                       (new Bounds(spawnPosition[randomIndex].transform.position + addition * Vector3.up,
+                           new Vector3(10.0f,obj.transform.localScale.y,1.0f))))
+            {
+                addition += 0.1f;
+            }
+            obj.transform.position = spawnPosition[randomIndex].transform.position + addition * Vector3.up;
+            obj.SetActive(true);
+            _previousTile = obj;
             _count++;
             if (_count == _musicSegments.Count)
                 obj.GetComponent<Tile>().isLast = true;
-
         }
     }
 }

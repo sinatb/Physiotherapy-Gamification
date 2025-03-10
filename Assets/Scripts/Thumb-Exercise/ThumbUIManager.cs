@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,7 +15,10 @@ namespace Thumb_Exercise
         [SerializeField] private TextMeshProUGUI playerScore;
         [SerializeField] private TextMeshProUGUI highScoreText;
         [SerializeField] private TMP_Dropdown    musicSelect;
-        
+        [SerializeField] private TextMeshProUGUI feedbackText;
+
+        private Coroutine _scoreIncreaseCoroutine;
+        private int _accumulatedScore;
         // Start the game with the selected music
         public void StartGame()
         {
@@ -23,8 +27,7 @@ namespace Thumb_Exercise
             GameManager.Instance.canSpawn = true;
             playerScore.text = "Score : 0";
         }
-
-
+        
         private void Start()
         {
             gameStartPanel.SetActive(true);
@@ -49,7 +52,26 @@ namespace Thumb_Exercise
         private void OnIncreaseScore()
         {
             playerScore.text = "Score : " + GameManager.Instance.PlayerScore;
+            _accumulatedScore++;
+            if (_scoreIncreaseCoroutine == null)
+             _scoreIncreaseCoroutine = StartCoroutine(PointFeedBack());
         }
-     
+
+        private IEnumerator PointFeedBack()
+        {
+            feedbackText.gameObject.SetActive(true);
+            var score = 1;
+            while (true)
+            {
+                feedbackText.text = "+" + score;
+                yield return new WaitForSeconds(0.2f);
+                if (score != _accumulatedScore)
+                    break;
+                score++;
+            }
+            _accumulatedScore = 0;
+            feedbackText.gameObject.SetActive(false);
+            _scoreIncreaseCoroutine = null;
+        }
     }
 }

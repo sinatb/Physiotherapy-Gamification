@@ -39,7 +39,7 @@ namespace Thumb_Exercise
         private IEnumerator ChangeColor(Color c, float duration)
         {
             var totalTime = 0.0f;
-            var baseColor = Color.white;
+            var baseColor =_propertyBlock.GetColor(_colorID);
             while (totalTime < duration)
             {
                 totalTime += Time.deltaTime;
@@ -93,9 +93,22 @@ namespace Thumb_Exercise
         }
         public void SetYScale(float yScale)
         {
-            transform.localScale = new Vector3(transform.localScale.x,
-                yScale,
-                transform.localScale.z);
+            if (Mathf.Approximately(Audio.length, 1.0f))
+                transform.localScale = new Vector3(transform.localScale.x,
+                    yScale/2,
+                    transform.localScale.z);
+            else if (Mathf.Approximately(Audio.length, 3.0f))
+            {
+                transform.localScale = new Vector3(transform.localScale.x,
+                    3*(yScale / 2),
+                    transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(transform.localScale.x,
+                    yScale,
+                    transform.localScale.z);
+            }
         }
         private IEnumerator MonitorPlayer()
         {
