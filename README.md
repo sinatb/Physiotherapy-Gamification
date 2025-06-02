@@ -45,3 +45,8 @@ This game is designed for the Thumb exercise. In it the player has to move his t
 ![alt text](./ReadMe/{318A58D0-92AE-48B0-B087-3A0116138A0D}.png)
 
 ![alt text](./ReadMe/{6EAFCF76-4CA9-4163-9E0D-374C82149721}.png)
+
+## GamePlay
+[Game1](https://drive.google.com/file/d/11rr5DXM0QYUJ71S013W9Mm6jZ7TcpFG2/view?resourcekey)
+[Game2](https://drive.google.com/file/d/1eqU2SN1IlgmxSNMpHIujOj9G76IndviZ/view?resourcekey)
+[Game3](https://drive.google.com/file/d/1thN34M6drweIpdZFEIwmXbaI4EVG1CmU/view?resourcekey)
